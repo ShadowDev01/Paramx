@@ -23,7 +23,7 @@ function ARGUMENTS()
             group = "source"
 
         "-S", "--source"
-            help = "saved page source code with correct extension"
+            help = "saved html source code"
             group = "source"
 
         "-R", "--request"
@@ -88,7 +88,7 @@ function ARGUMENTS()
             action = :store_true
 
         "-o", "--output"
-            help = "save output"
+            help = "save output in file"
             group = "save"
             arg_type = String
     end
