@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>To Discover :)</title>
+</head>
+<script type="text/javascript">
+	var test_var = 'something';
+	var test_obj = {"obj_key1": "val1", "obj_key2": "val2"}
+	var empty_var = '';
+	let mahdi2 = 45;
+</script>
+<script src='path/js_file.js'></script>
+<body>
+<form method="POST">
+	<input type="input" name="user_id_i" id='user_id'>
+	<input type="input" name="rdt_to" id='redirect' value='/information'>
+	<input type="submit" name="check">
+</form>
+<a href="path2/test.php?param1=value1">path2m param1</a>
+<a href="path2/?param2=value2">path2, param2</a>
+</body>
+</html>

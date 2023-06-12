@@ -2,7 +2,7 @@ using Cascadia
 using Gumbo
 
 
-function input_tag(html)
+function input_tag(html::HTMLDocument)
     inputs = eachmatch(Selector("input"), html.root)
     for input in inputs
         push!(parameter, get(input.attributes, "name", ""))
@@ -10,7 +10,7 @@ function input_tag(html)
     end
 end
 
-function a_tag(html)
+function a_tag(html::HTMLDocument)
     as = eachmatch(Selector("a"), html.root)
     for a in as
         href = get(a.attributes, "href", "")
@@ -20,7 +20,7 @@ function a_tag(html)
     end
 end
 
-function script_tag(html)
+function script_tag(html::HTMLDocument)
     scripts = eachmatch(Selector("script"), html.root)
     for script in scripts
         variables = eachmatch(r"(let|var|const)\s(\w+)\s?=", string(script))
@@ -38,8 +38,7 @@ function files(source::String, extensions::Vector{String})
 end
 
 function _urls(source::String)
-    regex = r"https?://[^\s]+/"
-    urls = eachmatch(regex, source)
+    urls = eachmatch(r"https?://[^\s]+/", source)
     foreach(url -> push!(Urls, url.match), urls)
 end
 
@@ -61,7 +60,7 @@ end
 
 function Open(file::String)
     try
-        File = open(file) do f
+        File::String = open(file) do f
             read(f, String)
         end
         return File
