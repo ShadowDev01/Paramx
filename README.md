@@ -1,4 +1,6 @@
-# for help menu: julia Paramx -h
+# install julia from this link: https://julialang.org/downloads/
+
+* for help menu: julia Paramx -h
 
 usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
               [-P RESPONSE] [--js JS] [--php PHP] [-a] [-i] [-s] [-p]
