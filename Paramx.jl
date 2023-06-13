@@ -1,4 +1,3 @@
-include("./src/package.jl")
 include("./src/arg.jl")
 include("./src/func.jl")
 using HTTP

@@ -8,6 +8,12 @@ usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
               [-o OUTPUT] [-h]
 
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+***Please install HTTP, Gumbo, Cascadia, ArgParse packages before run the Program***
+* 1. run julia
+* 2. press ] key
+* 3. type this command: add HTTP Gumbo Cascadia ArgParse
+
+
 # help to find:
 
 * Parameter names
@@ -24,8 +30,6 @@ usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
 
 * Url(s)
 * File(s)
-
-***Please install HTTP, Gumbo, Cascadia packages before run the Program***
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # optional arguments:
