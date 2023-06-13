@@ -21,6 +21,7 @@ usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
 * <a> tags href inner parameters
 * js variables names
 * js object keys
+* js normal and anonymous function input parameters
 * php variables names
 * php $_GET, $_POST valuse
 * Files names with given extensions
@@ -50,7 +51,7 @@ usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
 *  -s, --script          find <script> tag variables names & objects keys
 *  -p                    find parameters in request or response or js or php content
 *  -f, --file-names      find file names
-*  -e, --extension       extension(s) of files to search, must be in space seprated
+*  -e, --extension       extension(s) of files to search, must be in space separated
 *  -w                    find urls
 *  -A                    do all -a -i -s -f -u -w
 

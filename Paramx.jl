@@ -3,9 +3,9 @@ include("./src/func.jl")
 using HTTP
 using Gumbo
 
-parameter = Set{String}()
-Urls = Set{String}()
-file_names = Set{String}()
+parameter = Set{AbstractString}()
+Urls = Set{AbstractString}()
+file_names = Set{AbstractString}()
 
 function URL(url::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     req::HTTP.Messages.Response = HTTP.get(url)
@@ -49,7 +49,13 @@ end
 
 function REQUEST(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    p && js(source)
+    header, body = split(source, "\r\n\r\n")
+    if startswith(lowercase(body), "<!doctype html>")
+        html = parsehtml(body)
+    else
+        html = parsehtml("<body><script>$body</script></body>")
+    end
+    p && (script_tag(html); headers(header))
     w && _urls(source)
     (f && !isempty(e)) && files(source, e)
     data = join(union(parameter, Urls, file_names), "\n")
@@ -58,9 +64,14 @@ end
 
 function RESPONSE(file::String, i::Bool, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    html = join([m.match for m in eachmatch(r"<input.*?>", source)] ,"\n") |> parsehtml
+    header, body = split(source, "\n\n")
+    if startswith(lowercase(body), "<!doctype html>")
+        html = parsehtml(body)
+    else
+        html = parsehtml("<body><script>$body</script></body>")
+    end
     i && input_tag(html)
-    p && js(source)
+    p && (script_tag(html); headers(header))
     w && _urls(source)
     (f && !isempty(e)) && files(source, e)
     data = join(union(parameter, Urls, file_names), "\n")
@@ -69,7 +80,8 @@ end
 
 function JS(file::String, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    js(source)
+    html::HTMLDocument = parsehtml("<body><script>$source</script></body>")
+    script_tag(html)
     w && _urls(source)
     (f && !isempty(e)) && files(source, e)
     data = join(union(parameter, Urls, file_names), "\n")
