@@ -65,6 +65,16 @@ function headers(H::Union{String, SubString{String}})
     foreach(param -> push!(parameter, param.captures[1]), params)
 end
 
+function CALL(source::String, html::HTMLDocument="", header::String=""; P::Bool=false, a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
+    a && a_tag(html)
+    i && input_tag(html)
+    s && script_tag(html)
+    p && (script_tag(html); headers(header))
+    w && _urls(source)
+    P && php(source)
+    (f && !isempty(e)) && files(source, e)
+end
+
 function Open(file::String)
     try
         File::String = open(file) do f
