@@ -93,3 +93,8 @@ function Write(filename::String, mode::String, data::String)
         write(file, data)
     end
 end
+
+function OUT(o)
+    data = join(union(parameter, Urls, file_names), "\n")
+    !isnothing(o) ? Write(o, "w+", data) : println(data)
+end

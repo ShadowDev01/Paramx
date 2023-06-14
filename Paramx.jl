@@ -12,8 +12,7 @@ function URL(url::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector
     source::String = req |> String
     html::HTMLDocument = parsehtml(String(req.body))
     CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
-    data = join(union(parameter, Urls, file_names), "\n")
-    !isnothing(o) ? Write(o, "w+", data) : println(data)
+    OUT(o)
 end
 
 function URLS(file::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
@@ -22,8 +21,7 @@ function URLS(file::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vect
         source::String = req |> String
         html::HTMLDocument = parsehtml(String(req.body))
         CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
-        data = join(union(parameter, Urls, file_names), "\n")
-        !isnothing(o) ? Write(o, "w+", data) : println(data)
+        OUT(o)
     end
 end
 
@@ -31,8 +29,7 @@ function SOURCE(file::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Ve
     source::String = Open(file)
     html::HTMLDocument = parsehtml(source)
     CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
-    data = join(union(parameter, Urls, file_names), "\n")
-    !isnothing(o) ? Write(o, "w+", data) : println(data)
+    OUT(o)
 end
 
 function REQUEST(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
@@ -44,8 +41,7 @@ function REQUEST(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
         html = parsehtml("<body><script>$body</script></body>")
     end
     CALL(source, html, header, p=p, w=w, f=f, e=e)
-    data = join(union(parameter, Urls, file_names), "\n")
-    !isnothing(o) ? Write(o, "w+", data) : println(data)
+    OUT(o)
 end
 
 function RESPONSE(file::String, i::Bool, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
@@ -57,23 +53,20 @@ function RESPONSE(file::String, i::Bool, p::Bool, w::Bool, f::Bool, e::Vector{St
         html = parsehtml("<body><script>$body</script></body>")
     end
     CALL(source, html, header, i=i, p=p, w=w, f=f, e=e)
-    data = join(union(parameter, Urls, file_names), "\n")
-    !isnothing(o) ? Write(o, "w+", data) : println(data)
+    OUT(o)
 end
 
 function JS(file::String, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
     html::HTMLDocument = parsehtml("<body><script>$source</script></body>")
     CALL(source, html, s=true, w=w, f=f, e=e)
-    data = join(union(parameter, Urls, file_names), "\n")
-    !isnothing(o) ? Write(o, "w+", data) : println(data)
+    OUT(o)
 end
 
 function PHP(file::String, p::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
     CALL(source, P=p, f=f, e=e)
-    data = join(union(parameter, Urls, file_names), "\n")
-    !isnothing(o) ? Write(o, "w+", data) : println(data)
+    OUT(o)
 end
 
 function main()
