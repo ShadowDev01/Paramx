@@ -68,10 +68,11 @@ function ARGUMENTS()
             action = :store_true
 
         "-e", "--extension"
-            help = "extension(s) of files to search, must be in space seprated"
+            help = "extension(s) of files to search, must be in space seprated; default is js"
             group = "function"
             arg_type = String
             nargs = '+'
+            default = ["js"]
 
         "-w"
             help = "find urls"
@@ -106,10 +107,6 @@ function check_arguments()
     source_args = [arguments[arg] for arg in ["url", "urls", "source", "request", "response"]]
     if count(arg -> !isnothing(arg), source_args) > 1
         @warn "you can't use -u\\-U\\-S\\-r\\-p at same time"
-        exit(0)
-    end
-    if arguments["A"] && isempty(arguments["extension"])
-        @warn "should give at least one extension with -e or --extension when use -A"
         exit(0)
     end
 end

@@ -51,7 +51,7 @@ usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
 *  -s, --script          find <script> tag variables names & objects keys
 *  -p                    find parameters in request or response or js or php content
 *  -f, --file-names      find file names
-*  -e, --extension       extension(s) of files to search, must be in space separated
+*  -e, --extension       extension(s) of files to search, must be in space separated; default is js
 *  -w                    find urls
 *  -A                    do all -a -i -s -f -u -w
 
