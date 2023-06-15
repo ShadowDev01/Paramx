@@ -57,5 +57,11 @@
 
 * find js variables names & objects keys from url
 ~~~
->`julia Paramx.jl -u [url] -s`
+> julia Paramx.jl -u [url] -s
 ~~~
+* find name & id attribute values in <input> <textarea>
+~~~
+> julia Paramx.jl -u [url] -i
+~~~
+
+
