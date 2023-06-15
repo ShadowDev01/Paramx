@@ -56,6 +56,6 @@
 # Examples
 
 * find js variables names & objects keys from url
----
-julia Paramx.jl -u [url] -s
----
+~~~
+>`julia Paramx.jl -u [url] -s`
+~~~
