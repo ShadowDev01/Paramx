@@ -1,5 +1,5 @@
 <h1 align="center">
-  <img src="src/paramx.png" alt="paramx" width="200px">
+  <img src="src/paramx.png" alt="paramx" width="900px">
   <br>
 </h1>
 
