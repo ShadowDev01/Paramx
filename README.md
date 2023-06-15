@@ -75,6 +75,10 @@
 ~~~
 > julia Paramx.jl -u [url] -w
 ~~~
+* you can do multiple work with together
+~~~
+> julia Paramx.jl -u [url] -s -a -i
+~~~
 * find all above
 ~~~
 > julia Paramx.jl -u [url] -A -e "js" "html" "xml"
@@ -99,12 +103,19 @@
 ~~~
 > julia Paramx.jl -P [file] -[WORK switches]
 ~~~
-* find parameters by give swithes in javascript file
+* find variables names & objects keys by in javascript file
 ~~~
-> julia Paramx.jl --js [file.js] -[WORK switches]
+> julia Paramx.jl --js [file.js] -p
 ~~~
-* find parameters by give swithes in php file
+* In addition to the above finds urls and files too
 ~~~
-> julia Paramx.jl --js [file.php] -[WORK switches]
+> julia Paramx.jl --js [file.js] -p -w -f [extension]
 ~~~
-
+* find variable names and $_GET * $_POST values in php file
+~~~
+> julia Paramx.jl --php [file.php] -p
+~~~
+* In addition to the above finds urls and files too
+~~~
+> julia Paramx.jl --php [file.php] -p -w -f [extension]
+~~~
