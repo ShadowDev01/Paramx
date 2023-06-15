@@ -74,7 +74,7 @@ function main()
     arguments = ARGUMENTS()
 
     a = arguments["a"]
-    i = arguments["input"]
+    i = arguments["i"]
     s = arguments["script"]
     w = arguments["w"]
     p = arguments["p"]

@@ -4,9 +4,14 @@ using Gumbo
 
 function input_tag(html::HTMLDocument)
     inputs = eachmatch(Selector("input"), html.root)
+    textareas = eachmatch(Selector("textarea"), html.root)
     for input in inputs
         push!(parameter, get(input.attributes, "name", ""))
         push!(parameter, get(input.attributes, "id", ""))
+    end
+    for textarea in textareas
+        push!(parameter, get(textarea.attributes, "name", ""))
+        push!(parameter, get(textarea.attributes, "id", ""))
     end
 end
 
@@ -26,18 +31,9 @@ function script_tag(html::HTMLDocument)
         variables = eachmatch(r"(let|var|const)\s(\w+)\s?=", string(script))
         objects = eachmatch(r"(let|var|const)?\s?[\",\']?(\w+)[\",\']?\s?:", string(script))
         params = eachmatch(r"[\?,&,;](\w+)=", string(script))
-        funcArgs = eachmatch(r"function\s\w+\((.+)\)\{|\((.+)\)\s?=>", string(script))
         foreach(variable -> push!(parameter, variable.captures[2]), variables)
         foreach(object -> push!(parameter, object.captures[2]), objects)
         foreach(param -> push!(parameter, param.captures[1]), params)
-        for capture in funcArgs
-            for cap in capture
-                if !isa(cap, Nothing)
-                    st = split(cap, ",") .|> strip
-                    push!(parameter, st...)
-                end
-            end
-        end
     end
 end
 

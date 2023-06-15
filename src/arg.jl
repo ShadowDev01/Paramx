@@ -47,8 +47,8 @@ function ARGUMENTS()
             group = "function"
             action = :store_true
 
-        "-i", "--input"
-            help = "find <input> tag parameters"
+        "-i"
+            help = "find <input> & <textarea> name, id parameters"
             group = "function"
             action = :store_true
 
