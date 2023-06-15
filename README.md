@@ -1,6 +1,5 @@
 # install julia from this link: https://julialang.org/downloads/
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-***Please install HTTP, Gumbo, Cascadia, ArgParse packages before run the Program***
 * 1. run julia
 * 2. press ] key
 * 3. type this command: add HTTP Gumbo Cascadia ArgParse
@@ -31,7 +30,7 @@
 # optional arguments:
 *  -h, --help            show this help message and exit
 
-# source switches:
+# INPUT switches:
 *  -u, --url             single url to crawl
 *  -U, --urls            multiple urls in file to crawl
 *  -S, --source          saved html source code
@@ -40,10 +39,10 @@
 *  --js                  find parameters in js file
 *  --php                 find parameters in php file
 
-# work switches:
+# WORK switches:
 *  -a                    find parameters in herf of <a> tag
 *  -i                    find <input> <textarea> tag parameters [name, id]
-*  -s, --script          find <script> tag variables names & objects keys & functions paramters
+*  -s, --script          find <script> tag variables names & objects keys
 *  -p                    find parameters in request or response or js or php content
 *  -f, --file-names      find file names
 *  -e, --extension       extension(s) of files to search, must be in space separated; default is js
@@ -56,3 +55,7 @@
 
 # Examples
 
+* find js variables names & objects keys from url
+---
+julia Paramx.jl -u [url] -s
+---
