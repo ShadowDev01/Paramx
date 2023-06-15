@@ -63,5 +63,48 @@
 ~~~
 > julia Paramx.jl -u [url] -i
 ~~~
-
+* find parameters inside href attribute of <a>
+~~~
+> julia Paramx.jl -u [url] -a
+~~~
+* find files with give extensions; if dont pass -e only finds js by default
+~~~
+> julia Paramx.jl -u [url] -f -e "js" "php" ["any"]
+~~~
+* find urls
+~~~
+> julia Paramx.jl -u [url] -w
+~~~
+* find all above
+~~~
+> julia Paramx.jl -u [url] -A -e "js" "html" "xml"
+~~~
+* find all above and save output
+~~~
+> julia Paramx.jl -u [url] -A -e "js" "html" "xml" -o file.txt
+~~~
+* read file line by line and do same for each url
+~~~
+> julia Paramx.jl -U [file] -[WORK switches]
+~~~
+* find parameters by give swithes in saved html source code
+~~~
+> julia Paramx.jl -S [file] -[WORK switches]
+~~~
+* find parameters by give swithes in sent http request file
+~~~
+> julia Paramx.jl -R [file] -[WORK switches]
+~~~
+* find parameters by give swithes in received http response file
+~~~
+> julia Paramx.jl -P [file] -[WORK switches]
+~~~
+* find parameters by give swithes in javascript file
+~~~
+> julia Paramx.jl --js [file.js] -[WORK switches]
+~~~
+* find parameters by give swithes in php file
+~~~
+> julia Paramx.jl --js [file.php] -[WORK switches]
+~~~
 
