@@ -1,13 +1,13 @@
 # install julia from this link: https://julialang.org/downloads/
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-* 1. run julia
-* 2. press ] key
-* 3. type this command: add HTTP Gumbo Cascadia ArgParse
-* 4. press 'ctrl + c'
-* 5. type: exit()
-* 6. git clone https://github.com/mrmeeseeks01/Paramx
-* 7. open Paramx directory
-* 8. julia Paramx.jl -h
+# after install run this commands in terminal:
+
+* 1. julia -e 'using Pkg; Pkg.add("HTTP"); Pkg.add("Gumbo"); Pkg.add("Cascadia"); Pkg.add("ArgParse")'
+* 2. git clone https://github.com/mrmeeseeks01/Paramx
+* 3. cd Paramx/
+* 4. julia Paramx.jl -h
+
+
 
 # help to find:
 
