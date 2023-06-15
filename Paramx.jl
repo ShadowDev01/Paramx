@@ -1,3 +1,4 @@
+include("./src/banner.jl")
 include("./src/arg.jl")
 include("./src/func.jl")
 using HTTP

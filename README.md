@@ -1,5 +1,13 @@
-# install julia from this link: https://julialang.org/downloads/
+ ____                           ___  ___
+|  _ \ __ _ _ __ __ _ _ __ ___  \  \/  /
+| |_) / _` | '__/ _` | '_ ` _ \  \    /
+|  __/ (_| | | | (_| | | | | | \ /    \
+|_|   \__,_|_|  \__,_|_| |_| |_|/__/\__\
+
+
+# Install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# install julia from this link: https://julialang.org/downloads/
 # after install run this commands in terminal:
 
 * 1. julia -e 'using Pkg; Pkg.add("HTTP"); Pkg.add("Gumbo"); Pkg.add("Cascadia"); Pkg.add("ArgParse")'
@@ -8,7 +16,20 @@
 * 4. julia Paramx.jl -h
 
 
+# or you can use docker:
 
+* 1. git clone https://github.com/mrmeeseeks01/Paramx
+* 2. cd Paramx/
+* 3. docker build -t paramx .
+* 4. docker run -it paramx
+* 5. press ; to enabled shell mode
+* 6. julia Paramx.jl -h
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+
+# Intro
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # help to find:
 
 * Parameter names
