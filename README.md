@@ -1,18 +1,14 @@
 # install julia from this link: https://julialang.org/downloads/
-
-* for help menu: julia Paramx -h
-
-usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
-              [-P RESPONSE] [--js JS] [--php PHP] [-a] [-i] [-s] [-p]
-              [-f] [-e EXTENSION [EXTENSION...]] [-w] [-A] [-v]
-              [-o OUTPUT] [-h]
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 ***Please install HTTP, Gumbo, Cascadia, ArgParse packages before run the Program***
 * 1. run julia
 * 2. press ] key
 * 3. type this command: add HTTP Gumbo Cascadia ArgParse
-
+* 4. press 'ctrl + c'
+* 5. type: exit()
+* 6. git clone https://github.com/mrmeeseeks01/Paramx
+* 7. open Paramx directory
+* 8. julia Paramx.jl -h
 
 # help to find:
 
@@ -57,3 +53,6 @@ usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
 # save switches:
 *  -o, --output OUTPUT   save output in file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Examples
+
