@@ -49,7 +49,7 @@ function files(source::Union{String, SubString{String}}, extensions::Vector{Stri
 end
 
 function _urls(source::AbstractString)
-    urls = eachmatch(r"https?://[^\s]+/", source)
+    urls = eachmatch(r"\w+:\/\/[\w\.]+[^\s\<\>\"\']*", source)
     foreach(url -> push!(Urls, url.match), urls)
 end
 

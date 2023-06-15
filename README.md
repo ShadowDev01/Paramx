@@ -42,8 +42,8 @@ usage: Paramx [-u URL] [-U URLS] [-S SOURCE] [-R REQUEST]
 *  -S, --source          saved html source code
 *  -R, --request         sent http request in file
 *  -P, --response        received http response in file
-*  --js                  find parameters in js files
-*  --php                 find parameters in php files
+*  --js                  find parameters in js file
+*  --php                 find parameters in php file
 
 # work switches:
 *  -a                    find parameters in herf of <a> tag
