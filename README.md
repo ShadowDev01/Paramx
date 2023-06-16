@@ -143,3 +143,11 @@
 ~~~
 > julia Paramx.jl --php [file.php] -p -w -f [extension]
 ~~~
+* find variable elements name in xml file
+~~~
+> julia Paramx.jl --xml [file.xml] -p
+~~~
+* In addition to the above finds urls and files too
+~~~
+> julia Paramx.jl --xml [file.xml] -p -w -f [extension]
+~~~
