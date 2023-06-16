@@ -99,7 +99,7 @@ function ARGUMENTS()
     end
     parsed_args = parse_args(ARGS, settings)
     if parsed_args["A"]
-        for arg in ["a", "i", "script", "w", "file-names"]
+        for arg in ["a", "i", "script", "w", "file-names", "p"]
             parsed_args[arg] = true
         end
     end
