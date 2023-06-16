@@ -37,6 +37,7 @@
 * js object keys
 * php variables names
 * php $_GET, $_POST valuse
+* xml elements name
 * Files names with given extensions
 * Urls
 
@@ -60,6 +61,7 @@
 *  -P, --response        received http response in file
 *  --js                  find parameters in js file
 *  --php                 find parameters in php file
+*  --xml                 find parameters in xml file
 
 # WORK switches:
 *  -a                    find parameters in herf of <a> tag
@@ -72,7 +74,7 @@
 *  -A                    do all -a -i -s -f -u -w
 
 # save switches:
-*  -o, --output OUTPUT   save output in file
+*  -o, --output          save output in file
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Examples

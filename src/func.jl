@@ -37,7 +37,7 @@ function script_tag(html::HTMLDocument)
     end
 end
 
-function files(source::Union{String, SubString{String}}, extensions::Vector{String})
+function files(source::AbstractString, extensions::Vector{String})
     ext = join(extensions, '|')
     regex = Regex("\\/?([\\w,\\.,\\-]+\\.($ext))")
     files = eachmatch(regex, source)
@@ -49,25 +49,36 @@ function _urls(source::AbstractString)
     foreach(url -> push!(Urls, url.match), urls)
 end
 
-function php(source::Union{String, SubString{String}})
+function php(source::AbstractString)
     variables = eachmatch(r"\$(\w+)\s?=", source)
     GET_POST = eachmatch(r"\$_(GET|POST)\[[\",\'](.*)[\",\']\]", source)
     foreach(var -> push!(parameter, var.captures[1]), variables)
     foreach(g_p -> push!(parameter, g_p.captures[2]), GET_POST)
 end
 
-function headers(H::Union{String, SubString{String}})
+function xml(source::String)
+    elements = eachmatch(r"<(\w+)[\s\>]", source)
+    foreach(element -> push!(parameter, element.captures[1]), elements)
+end
+
+function headers(H::AbstractString)
     params = eachmatch(r"[\?,&,;](\w+)=", H)
     foreach(param -> push!(parameter, param.captures[1]), params)
 end
 
-function CALL(source::String, html::HTMLDocument="", header::String=""; P::Bool=false, a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
+function CALL(source::String, html::HTMLDocument="", header::String=""; a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
     a && a_tag(html)
     i && input_tag(html)
     s && script_tag(html)
     p && (script_tag(html); headers(header))
     w && _urls(source)
-    P && php(source)
+    (f && !isempty(e)) && files(source, e)
+end
+
+function CALL2(source; p::Bool=false, x::Bool=false,  w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
+    p && php(source)
+    x && xml(source)
+    w && _urls(source)
     (f && !isempty(e)) && files(source, e)
 end
 

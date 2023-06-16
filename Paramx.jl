@@ -35,7 +35,12 @@ end
 
 function REQUEST(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    header, body = split(source, "\r\n\r\n")
+    try
+        header, body = split(source, "\r\n\r\n")
+    catch e
+        @error "can't split header and body"
+        exit(0)
+    end
     if startswith(lowercase(body), "<!doctype html>")
         html = parsehtml(body)
     else
@@ -47,7 +52,12 @@ end
 
 function RESPONSE(file::String, i::Bool, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    header, body = split(source, "\n\n")
+    try
+        header, body = split(source, "\n\n")
+    catch e
+        @error "can't split header and body"
+        exit(0)
+    end
     if startswith(lowercase(body), "<!doctype html>")
         html = parsehtml(body)
     else
@@ -64,9 +74,15 @@ function JS(file::String, w::Bool, f::Bool, e::Vector{String}, o)
     OUT(o)
 end
 
-function PHP(file::String, p::Bool, f::Bool, e::Vector{String}, o)
+function PHP(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    CALL(source, P=p, f=f, e=e)
+    CALL2(source, p=p, w=w ,f=f, e=e)
+    OUT(o)
+end
+
+function XML(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    source::String = Open(file)
+    CALL2(source, x=p, w=w, f=f, e=e)
     OUT(o)
 end
 
@@ -89,7 +105,8 @@ function main()
     !isnothing(arguments["request"]) && REQUEST(arguments["request"], p, w, f, e, o)
     !isnothing(arguments["response"]) && RESPONSE(arguments["response"], i, p, w, f, e, o)
     !isnothing(arguments["js"]) && JS(arguments["js"], w, f, e, o)
-    !isnothing(arguments["php"]) && PHP(arguments["php"], p, f, e, o)
+    !isnothing(arguments["php"]) && PHP(arguments["php"], p, w, f, e, o)
+    !isnothing(arguments["xml"]) && XML(arguments["xml"], p, w, f, e, o)
 end
 
 main()

@@ -35,11 +35,15 @@ function ARGUMENTS()
             group = "source"
 
         "--js"
-            help = "find parameters in js files"
+            help = "find parameters in js file"
             group = "source"
 
         "--php"
-            help = "find parameters in js files"
+            help = "find parameters in js file"
+            group = "source"
+
+        "--xml"
+            help = "find parameters in xml file"
             group = "source"
 
         "-a"
@@ -68,7 +72,7 @@ function ARGUMENTS()
             action = :store_true
 
         "-e", "--extension"
-            help = "extension(s) of files to search, must be in space seprated; default is js"
+            help = "extension(s) of files to search, must be in space separated; default is js"
             group = "function"
             arg_type = String
             nargs = '+'
