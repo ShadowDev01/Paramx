@@ -29,7 +29,7 @@ function script_tag(html::HTMLDocument)
     scripts = eachmatch(Selector("script"), html.root)
     for script in scripts
         variables = eachmatch(r"(let|var|const)\s(\w+)\s?=", string(script))
-        objects = eachmatch(r"(let|var|const)?\s?[\",\']?(\w+)[\",\']?\s?:", string(script))
+        objects = eachmatch(r"(let|var|const)?\s?[\",\']?([\w\.]+)[\",\']?\s?:", string(script))
         params = eachmatch(r"[\?,&,;](\w+)=", string(script))
         foreach(variable -> push!(parameter, variable.captures[2]), variables)
         foreach(object -> push!(parameter, object.captures[2]), objects)

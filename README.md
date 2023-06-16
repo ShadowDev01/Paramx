@@ -5,8 +5,8 @@
 
 # Install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# install julia from this link: https://julialang.org/downloads/
-# after install run this commands in terminal:
+# install julia: https://julialang.org/downloads/
+# then run this commands in terminal:
 
 * 1. julia -e 'using Pkg; Pkg.add("HTTP"); Pkg.add("Gumbo"); Pkg.add("Cascadia"); Pkg.add("ArgParse")'
 * 2. git clone https://github.com/mrmeeseeks01/Paramx
@@ -31,7 +31,7 @@
 # help to find:
 
 * Parameter names
-* <input> tag's name & id values
+* <input> & <textarea> name & id attributes values
 * <a> tags href inner parameters
 * js variables names
 * js object keys
@@ -125,7 +125,7 @@
 ~~~
 > julia Paramx.jl -P [file] -[WORK switches]
 ~~~
-* find variables names & objects keys by in javascript file
+* find variables names & objects keys in javascript file
 ~~~
 > julia Paramx.jl --js [file.js] -p
 ~~~
@@ -133,7 +133,7 @@
 ~~~
 > julia Paramx.jl --js [file.js] -p -w -f [extension]
 ~~~
-* find variable names and $_GET * $_POST values in php file
+* find variable names and $_GET & $_POST values in php file
 ~~~
 > julia Paramx.jl --php [file.php] -p
 ~~~
