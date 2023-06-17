@@ -17,7 +17,7 @@ function URL(url::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector
 end
 
 function URLS(file::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    for url in eachline(file)
+    Threads.@threads for url in readlines(file)
         req::HTTP.Messages.Response = HTTP.get(url)
         source::String = req |> String
         html::HTMLDocument = parsehtml(String(req.body))

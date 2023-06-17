@@ -67,19 +67,27 @@ function headers(H::AbstractString)
 end
 
 function CALL(source::String, html::HTMLDocument="", header::String=""; a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
-    a && a_tag(html)
-    i && input_tag(html)
-    s && script_tag(html)
-    p && (script_tag(html); headers(header))
-    w && _urls(source)
-    (f && !isempty(e)) && files(source, e)
+    @sync begin
+        @async begin
+            a && a_tag(html)
+            i && input_tag(html)
+            s && script_tag(html)
+            p && (script_tag(html); headers(header))
+            w && _urls(source)
+            (f && !isempty(e)) && files(source, e)
+        end
+    end
 end
 
 function CALL2(source; p::Bool=false, x::Bool=false,  w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
-    p && php(source)
-    x && xml(source)
-    w && _urls(source)
-    (f && !isempty(e)) && files(source, e)
+    @sync begin
+        @async begin
+            p && php(source)
+            x && xml(source)
+            w && _urls(source)
+            (f && !isempty(e)) && files(source, e)
+        end
+    end
 end
 
 function Open(file::String)
