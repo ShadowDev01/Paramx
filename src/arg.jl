@@ -22,6 +22,12 @@ function ARGUMENTS()
             help = "multiple targets urls in file to crawl"
             group = "source"
 
+        "-H"
+            help = "set Headers of HTTP request use by -u/-U"
+            group = "source"
+            arg_type = String
+            nargs = '*'
+
         "-S", "--source"
             help = "saved html source code"
             group = "source"
@@ -86,10 +92,6 @@ function ARGUMENTS()
         "-A"
             help = "do all -a -i -s -f -u -w"
             group = "function"
-            action = :store_true
-
-        "-v", "--verbose"
-            help = "progress of processing"
             action = :store_true
 
         "-o", "--output"

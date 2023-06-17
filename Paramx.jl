@@ -8,17 +8,21 @@ parameter = Set{AbstractString}()
 Urls = Set{AbstractString}()
 file_names = Set{AbstractString}()
 
-function URL(url::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    req::HTTP.Messages.Response = HTTP.get(url)
+function URL(url::String, H, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    custom_header = map(h -> split(h, ":", limit=2), H)
+    Headers = [header => strip(value) for (header, value) in custom_header]
+    req::HTTP.Messages.Response = HTTP.get(url, Headers)
     source::String = req |> String
     html::HTMLDocument = parsehtml(String(req.body))
     CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
     OUT(o)
 end
 
-function URLS(file::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+function URLS(file::String, H, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    custom_header = map(h -> split(h, ":", limit=2), H)
+    Headers = [header => strip(value) for (header, value) in custom_header]
     Threads.@threads for url in readlines(file)
-        req::HTTP.Messages.Response = HTTP.get(url)
+        req::HTTP.Messages.Response = HTTP.get(url, Headers)
         source::String = req |> String
         html::HTMLDocument = parsehtml(String(req.body))
         CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
@@ -98,9 +102,10 @@ function main()
     f = arguments["file-names"]
     e = arguments["extension"]
     o = arguments["output"]
+    H = arguments["H"]
 
-    !isnothing(arguments["url"]) && URL(arguments["url"], a, i, s, w, f, e, o)
-    !isnothing(arguments["urls"]) && URLS(arguments["urls"], a, i, s, w, f, e, o)
+    !isnothing(arguments["url"]) && URL(arguments["url"], H, a, i, s, w, f, e, o)
+    !isnothing(arguments["urls"]) && URLS(arguments["urls"], H, a, i, s, w, f, e, o)
     !isnothing(arguments["source"]) && SOURCE(arguments["source"], a, i, s, w, f, e, o)
     !isnothing(arguments["request"]) && REQUEST(arguments["request"], p, w, f, e, o)
     !isnothing(arguments["response"]) && RESPONSE(arguments["response"], i, p, w, f, e, o)
