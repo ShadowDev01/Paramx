@@ -56,7 +56,6 @@
 # INPUT switches:
 *  -u, --url             single url to crawl
 *  -U, --urls            multiple urls in file to crawl
-*  -H                    set Headers of HTTP request use by -u/-U and space separated
 *  -S, --source          saved html source code
 *  -R, --request         sent http request in file
 *  -P, --response        received http response in file
@@ -86,10 +85,6 @@
 * find js variables names & objects keys from url
 ~~~
 > julia Paramx.jl -u [url] -s
-~~~
-* find js variables names & objects keys from url with custom Headers
-~~~
-> julia Paramx.jl -u [url] -H "Cookie: somthing" "Host: something" -s
 ~~~
 * find name & id attribute values in <input> <textarea>
 ~~~
