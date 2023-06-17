@@ -80,7 +80,7 @@
 # Examples
 * for custom threads, should pass -t [int] to julia
 ~~~
-> julia -t [2] Paramx.jl -u [url] -s
+> julia -t 2 Paramx.jl -u [url] -s
 ~~~
 * find js variables names & objects keys from url
 ~~~
