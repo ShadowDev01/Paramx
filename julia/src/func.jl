@@ -1,17 +1,17 @@
 using Cascadia
 using Gumbo
 
+parameter = Set{AbstractString}()
+Urls = Set{AbstractString}()
+file_names = Set{AbstractString}()
 
 function input_tag(html::HTMLDocument)
     inputs = eachmatch(Selector("input"), html.root)
     textareas = eachmatch(Selector("textarea"), html.root)
+    append!(inputs, textareas)
     for input in inputs
         push!(parameter, get(input.attributes, "name", ""))
         push!(parameter, get(input.attributes, "id", ""))
-    end
-    for textarea in textareas
-        push!(parameter, get(textarea.attributes, "name", ""))
-        push!(parameter, get(textarea.attributes, "id", ""))
     end
 end
 

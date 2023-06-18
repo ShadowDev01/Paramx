@@ -4,10 +4,6 @@ include("./src/func.jl")
 using HTTP
 using Gumbo
 
-parameter = Set{AbstractString}()
-Urls = Set{AbstractString}()
-file_names = Set{AbstractString}()
-
 function URL(url::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     req::HTTP.Messages.Response = HTTP.get(url)
     source::String = req |> String
@@ -18,11 +14,7 @@ end
 
 function URLS(file::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     Threads.@threads for url in readlines(file)
-        req::HTTP.Messages.Response = HTTP.get(url)
-        source::String = req |> String
-        html::HTMLDocument = parsehtml(String(req.body))
-        CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
-        OUT(o)
+        URL(url, a, i, s, w, f, e, o)
     end
 end
 
@@ -67,10 +59,10 @@ function RESPONSE(file::String, i::Bool, p::Bool, w::Bool, f::Bool, e::Vector{St
     OUT(o)
 end
 
-function JS(file::String, w::Bool, f::Bool, e::Vector{String}, o)
+function JS(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
     html::HTMLDocument = parsehtml("<body><script>$source</script></body>")
-    CALL(source, html, s=true, w=w, f=f, e=e)
+    CALL(source, html, s=p, w=w, f=f, e=e)
     OUT(o)
 end
 
@@ -104,7 +96,7 @@ function main()
     !isnothing(arguments["source"]) && SOURCE(arguments["source"], a, i, s, w, f, e, o)
     !isnothing(arguments["request"]) && REQUEST(arguments["request"], p, w, f, e, o)
     !isnothing(arguments["response"]) && RESPONSE(arguments["response"], i, p, w, f, e, o)
-    !isnothing(arguments["js"]) && JS(arguments["js"], w, f, e, o)
+    !isnothing(arguments["js"]) && JS(arguments["js"], p, w, f, e, o)
     !isnothing(arguments["php"]) && PHP(arguments["php"], p, w, f, e, o)
     !isnothing(arguments["xml"]) && XML(arguments["xml"], p, w, f, e, o)
 end

@@ -39,7 +39,7 @@ function ARGUMENTS()
             group = "source"
 
         "--php"
-            help = "find parameters in js file"
+            help = "find parameters in php file"
             group = "source"
 
         "--xml"
@@ -47,7 +47,7 @@ function ARGUMENTS()
             group = "source"
 
         "-a"
-            help = "find <a> tag parameters"
+            help = "find parmeters inside of <a> tag's href"
             group = "function"
             action = :store_true
 

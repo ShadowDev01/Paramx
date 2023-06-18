@@ -1,10 +1,11 @@
 <h1 align="center">
-  <img src="src/paramx.png" alt="paramx" width="900px">
+  <img src="julia/src/paramx.png" alt="paramx" width="900px">
   <br>
 </h1>
 
-# Install
+# Install -> [python or julia]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+<h1> julia </h1>
 # install julia: https://julialang.org/downloads/
 # then run this commands in terminal:
 
@@ -23,6 +24,24 @@
 * 5. press ; to enabled shell mode
 * 6. julia Paramx.jl -h
 
+
+<h1> python </h1>
+# install python: https://www.python.org/downloads/
+# then run this commands in terminal:
+
+* 1. git clone https://github.com/mrmeeseeks01/Paramx
+* 2. cd Paramx/
+* 3. pip install -r requirements.txt
+* 4. python Paramx.jl -h
+
+
+# or you can use docker:
+
+* 1. git clone https://github.com/mrmeeseeks01/Paramx
+* 2. cd Paramx/
+* 3. docker build -t paramx .
+* 4. docker run -it paramx
+* 5. python Paramx.jl -h
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
