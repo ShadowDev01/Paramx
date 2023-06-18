@@ -4,8 +4,9 @@
 </h1>
 
 # Install -> [python or julia]
+
+<h2> julia </h2>
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-<h1> julia </h1>
 # install julia: https://julialang.org/downloads/
 # then run this commands in terminal:
 
@@ -23,9 +24,11 @@
 * 4. docker run -it paramx
 * 5. press ; to enabled shell mode
 * 6. julia Paramx.jl -h
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-<h1> python </h1>
+<h2> python </h2>
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # install python: https://www.python.org/downloads/
 # then run this commands in terminal:
 
