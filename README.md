@@ -6,6 +6,7 @@
 # Install -> [python or julia]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             *** julia ***
+
 # install julia: https://julialang.org/downloads/
 # then run this commands in terminal:
 
@@ -26,6 +27,7 @@
 
 
                             *** python ***
+
 # install python: https://www.python.org/downloads/
 # then run this commands in terminal:
 
@@ -103,7 +105,7 @@
 ~~~
 * find js variables names & objects keys from url
 ~~~
-> julia Paramx.jl -u [url] -s
+> julia Paramx.jl -u [url] -s       or    python Paramx.jl -u [url] -s
 ~~~
 * find name & id attribute values in <input> <textarea>
 ~~~
