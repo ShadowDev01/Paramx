@@ -92,7 +92,7 @@
 *  -f, --file-names      find file names
 *  -e, --extension       extension(s) of files to search, must be in space separated; default is js
 *  -w                    find urls
-*  -A                    do all -a -i -s -f -u -w
+*  -A                    do all -a -i -s -f -p -w
 
 # save switches:
 *  -o, --output          save output in file

@@ -84,7 +84,7 @@ function ARGUMENTS()
             action = :store_true
 
         "-A"
-            help = "do all -a -i -s -f -u -w"
+            help = "do all -a -i -s -f -p -w"
             group = "function"
             action = :store_true
 

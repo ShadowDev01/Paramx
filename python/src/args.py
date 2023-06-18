@@ -27,11 +27,11 @@ def ARGUMENTS():
     Work.add_argument("-f", "--file-names", help="find file names", action="store_true")
     Work.add_argument("-e", "--extension", help="extension(s) of files to search, must be in space separated; default is js", nargs='+', default=["js"])
     Work.add_argument("-w", help="find urls", action="store_true")
-    Work.add_argument("-A", help="do all -a -i -s -f -u -w", action="store_true")
+    Work.add_argument("-A", help="do all -a -i -s -f -p -w", action="store_true")
     Save.add_argument("-o", "--output", help="save output in file", type=str)
 
     args = settings.parse_args()
-    
+
     if args.A:
         args.a=True
         args.i=True
