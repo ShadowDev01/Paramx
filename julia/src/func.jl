@@ -19,7 +19,7 @@ function a_tag(html::HTMLDocument)
     as = eachmatch(Selector("a"), html.root)
     for a in as
         href = get(a.attributes, "href", "")
-        for match in eachmatch(r"[\?,&,;](\w+)=", href)
+        for match in eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", href)
             push!(parameter, match.captures...)
         end
     end

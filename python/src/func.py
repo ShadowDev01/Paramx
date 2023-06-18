@@ -12,7 +12,7 @@ file_names = set()
 def a_tag(html):
     AS = html.find_all('a', href=True)
     for a in AS:
-        params = re.findall(r"[\?,&,;](\w+)=", a['href'])
+        params = re.findall(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", a['href'])
         parameter.update(params)
 
 def input_tag(html):
