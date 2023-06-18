@@ -1,5 +1,7 @@
-FROM python:3.11.4
+FROM ubuntu:latest
 RUN mkdir /Paramx
 WORKDIR /Paramx/
 COPY . /Paramx/
-RUN pip install -r requirements
+RUN apt update
+RUN apt install pip -y
+RUN pip install -r requirements.txt

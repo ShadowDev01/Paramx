@@ -12,14 +12,14 @@
 
 * 1. julia -e 'using Pkg; Pkg.add("HTTP"); Pkg.add("Gumbo"); Pkg.add("Cascadia"); Pkg.add("ArgParse")'
 * 2. git clone https://github.com/mrmeeseeks01/Paramx
-* 3. cd Paramx/
+* 3. cd Paramx/julia/
 * 4. julia Paramx.jl -h
 
 
 # or you can use docker:
 
 * 1. git clone https://github.com/mrmeeseeks01/Paramx
-* 2. cd Paramx/
+* 2. cd Paramx/julia/
 * 3. docker build -t paramx .
 * 4. docker run -it paramx
 * 5. press ; to enabled shell mode
@@ -32,7 +32,7 @@
 # then run this commands in terminal:
 
 * 1. git clone https://github.com/mrmeeseeks01/Paramx
-* 2. cd Paramx/
+* 2. cd Paramx/python/
 * 3. pip install -r requirements.txt
 * 4. python Paramx.jl -h
 
@@ -40,7 +40,7 @@
 # or you can use docker:
 
 * 1. git clone https://github.com/mrmeeseeks01/Paramx
-* 2. cd Paramx/
+* 2. cd Paramx/python/
 * 3. docker build -t paramx .
 * 4. docker run -it paramx
 * 5. python Paramx.jl -h
