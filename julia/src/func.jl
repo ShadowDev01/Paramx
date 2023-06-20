@@ -45,7 +45,8 @@ function files(source::AbstractString, extensions::Vector{String})
 end
 
 function _urls(source::AbstractString)
-    urls = eachmatch(r"\w+:\/\/[\w\.]+[^\s\<\>\"\']*", source)
+    regex = r"""(?:"|'|\\n|\\r|\n|\r)(((?:[a-zA-Z]{1,10}:\/\/|\/\/)[^"'\/]{1,}\.[a-zA-Z]{2,}[^"']{0,})|((?:\/|\.\.\/|\.\/)[^"'><,;| *()(%%$^\/\\\[\]][^"'><,;|()]{1,})|([a-zA-Z0-9_\-\/]{1,}\/[a-zA-Z0-9_\-\/]{1,}\.(?:[a-zA-Z]{1,4}|action)(?:[\?|\/][^"|']{0,}|))|([a-zA-Z0-9_\-]{1,}\.(?:php|asp|aspx|cfm|pl|jsp|json|js|action|html|htm|bak|do|txt|xml|xls|xlsx)(?:\?[^"|^']{0,}|)))(?:"|'|\\n|\\r|\n|\r)"""
+    urls = eachmatch(regex, source)
     foreach(url -> push!(Urls, url.match), urls)
 end
 

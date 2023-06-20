@@ -41,8 +41,9 @@ def files(source, extensions):
         file_names.add(name[0])
 
 def _urls(source):
-    urls = re.findall(r"\w+:\/\/[\w\.]+[^\s\<\>\"\']*", source)
-    Urls.update(urls)
+    regex = r"""(?:"|'|\\n|\\r|\n|\r)(((?:[a-zA-Z]{1,10}:\/\/|\/\/)[^"'\/]{1,}\.[a-zA-Z]{2,}[^"']{0,})|((?:\/|\.\.\/|\.\/)[^"'><,;| *()(%%$^\/\\\[\]][^"'><,;|()]{1,})|([a-zA-Z0-9_\-\/]{1,}\/[a-zA-Z0-9_\-\/]{1,}\.(?:[a-zA-Z]{1,4}|action)(?:[\?|\/][^"|']{0,}|))|([a-zA-Z0-9_\-]{1,}\.(?:php|asp|aspx|cfm|pl|jsp|json|js|action|html|htm|bak|do|txt|xml|xls|xlsx)(?:\?[^"|^']{0,}|)))(?:"|'|\\n|\\r|\n|\r)"""
+    urls = re.findall(regex, source)
+    Urls.update(*urls)
 
 def php(source):
     variables = re.findall(r"\$(\w+)\s?=", source)
