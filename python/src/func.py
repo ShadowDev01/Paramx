@@ -41,7 +41,7 @@ def files(source, extensions):
         file_names.add(name[0])
 
 def _urls(source):
-    regex = r"""(\w+:/)?(/[^\s\(\)"'<>\\]+)"""
+    regex = r"""(\w+:/)?(/[^\s\(\)\"\'\<\>\*\\]+)"""
     urls = re.findall(regex, source)
     with open("./src/html_tags.txt", "r", encoding="utf-8") as tags:
         tag = tags.readlines()

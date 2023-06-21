@@ -46,7 +46,7 @@ end
 
 function _urls(source::AbstractString)
     tags = readlines("./src/html_tags.txt")
-    regex = r"""(\w+:/)?(/[^\s\(\)"'<>\\]+)"""
+    regex = r"""(\w+:/)?(/[^\s\(\)\"\'\<\>\*\\]+)"""
     urls = eachmatch(regex, source)
     for url in urls
         if url.match ∉ tags
