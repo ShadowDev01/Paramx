@@ -6,7 +6,7 @@ using Gumbo
 
 function URL(url::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     req::HTTP.Messages.Response = HTTP.get(url)
-    source::String = req |> String
+    source::String = req.body |> String
     html::HTMLDocument = parsehtml(String(req.body))
     CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
     OUT(o)
