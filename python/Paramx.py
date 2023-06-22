@@ -25,30 +25,12 @@ def SOURCE(file, a, i, s, w, f, e, o):
 
 def REQUEST(file, p, w, f, e, o):
     source = Open(file)
-    try:
-        header, body = source.split("\r\n\r\n")
-    except:
-        logging.warning("can't split header and body")
-        exit(0)
-    if body.lower().startswith("<!doctype html>"):
-        html = BeautifulSoup(body, 'html.parser')
-    else:
-        html = BeautifulSoup(f"<body><script>{body}</script></body>", 'html.parser')
-    CALL(source=source, html=html, header=header, p=p, w=w, f=f, e=e)
+    CALL(source=source, p=p, w=w, f=f, e=e)
     OUT(o)
 
-def RESPONSE(file, i, p, w, f, e, o):
+def RESPONSE(file, p, w, f, e, o):
     source = Open(file)
-    try:
-        header, body = source.split("\n\n")
-    except:
-        logging.warning("can't split header and body")
-        exit(0)
-    if body.lower().startswith("<!doctype html>"):
-        html = BeautifulSoup(body, 'html.parser')
-    else:
-        html = BeautifulSoup(f"<body><script>{body}</script></body>", 'html.parser')
-    CALL(source=source, html=html, header=header, i=i, p=p, w=w, f=f, e=e)
+    CALL(source=source, p=p, w=w, f=f, e=e)
     OUT(o)
 
 def JS(file, p, w, f, e, o):
@@ -86,7 +68,7 @@ def main():
     elif arguments.request:
         REQUEST(file=arguments.request, p=p, w=w, f=f, e=e, o=o)
     elif arguments.response:
-        RESPONSE(file=arguments.response, i=i, p=p, w=w, f=f, e=e, o=o)
+        RESPONSE(file=arguments.response, p=p, w=w, f=f, e=e, o=o)
     elif arguments.js:
         JS(file=arguments.js, p=p, w=w, f=f, e=e, o=o)
     elif arguments.php:

@@ -67,27 +67,37 @@ function xml(source::String)
     foreach(element -> push!(parameter, element.captures[1]), elements)
 end
 
-function headers(H::AbstractString)
-    params = eachmatch(r"[\?,&,;](\w+)=", H)
+function content(source::String)
+    forms = eachmatch(r"<(input|textarea).*>", source)
+    variables = eachmatch(r"(let|var|const)\s(\w+)\s?=", source)
+    objects = eachmatch(r"(let|var|const)?\s?[\",\']?([\w\.]+)[\",\']?\s?:", source)
+    params = eachmatch(r"[\?,&,;](\w+)=", source)
+    foreach(variable -> push!(parameter, variable.captures[2]), variables)
+    foreach(object -> push!(parameter, object.captures[2]), objects)
     foreach(param -> push!(parameter, param.captures[1]), params)
+    for form in forms
+        for item in eachmatch(r"(name|id)\s?=\s?[\'\"](.+?)[\'\"]", form.match)
+            push!(parameter, item.captures[2])
+        end
+    end
 end
 
-function CALL(source::String, html::HTMLDocument="", header::String=""; a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
+function CALL(source::String, html::HTMLDocument=""; a::Bool=false, i::Bool=false, s::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
     @sync begin
         @async begin
             a && a_tag(html)
             i && input_tag(html)
             s && script_tag(html)
-            p && (script_tag(html); headers(header))
             w && _urls(source)
             (f && !isempty(e)) && files(source, e)
         end
     end
 end
 
-function CALL2(source; p::Bool=false, x::Bool=false,  w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
+function CALL2(source; m::Bool=false, p::Bool=false, x::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
     @sync begin
         @async begin
+            m && content(source)
             p && php(source)
             x && xml(source)
             w && _urls(source)

@@ -2,8 +2,8 @@ import re
 from bs4 import BeautifulSoup
 import logging
 
-logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
+logging.basicConfig(level=logging.INFO, format='%(levelname)s: %(message)s')
 
 parameter = set()
 Urls = set()
@@ -61,11 +61,20 @@ def xml(source):
     elements = re.findall(r"<(\w+)[\s\>]", source)
     parameter.update(elements)
 
-def headers(H):
-    params = re.findall(r"[\?,&,;](\w+)=", H)
-    parameter.update(params)
+def content(source):
+    variables = re.findall(r"(let|var|const)\s(\w+)\s?=", source)
+    objects = re.findall(r"(let|var|const)?\s?[\",\']?([\w\.]+)[\",\']?\s?:", source)
+    params = re.findall(r"[\?,&,;](\w+)=", source)
+    forms = re.findall(r"<(input|textarea)(.*)>", source)
+    for item in variables + objects:
+        parameter.add(item[1])
+    for param in params:
+        parameter.add(param)
+    for form in forms:
+        for attr in re.findall(r"(name|id)\s?=\s?[\'\"](.+?)[\'\"]", "".join(form)):
+            parameter.add(attr[1])
 
-def CALL(source="", html="", header="", a=False, i=False, s=False, p=False, w=False, x=False, P=False, f=False, e=["js"]):
+def CALL(source="", html="", a=False, i=False, s=False, p=False, w=False, x=False, P=False, f=False, e=["js"]):
     if a:
         a_tag(html=html)
     if i:
@@ -73,8 +82,7 @@ def CALL(source="", html="", header="", a=False, i=False, s=False, p=False, w=Fa
     if s:
         script_tag(html)
     if p:
-        script_tag(html=html)
-        headers(header=header)
+        content(source=source)
     if w:
         _urls(source=source)
     if f:
