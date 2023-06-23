@@ -3,6 +3,27 @@
   <br>
 </h1>
 
+# Intro
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# help to find:
+
+* Parameter names
+* <input> & <textarea> name & id attributes values
+* <a> tags href inner parameters
+* js variables names
+* js object keys
+* php variables names
+* php $_GET, $_POST valuse
+* xml elements name
+* Files names with given extensions
+* Urls
+
+# read from:
+
+* Url(s)
+* File(s)
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 # Install -> [python or julia]
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             *** julia ***
@@ -44,28 +65,6 @@
 * 3. docker build -t paramx .
 * 4. docker run -it paramx
 * 5. python Paramx.jl -h
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-
-# Intro
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# help to find:
-
-* Parameter names
-* <input> & <textarea> name & id attributes values
-* <a> tags href inner parameters
-* js variables names
-* js object keys
-* php variables names
-* php $_GET, $_POST valuse
-* xml elements name
-* Files names with given extensions
-* Urls
-
-# read from:
-
-* Url(s)
-* File(s)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
