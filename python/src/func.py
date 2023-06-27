@@ -27,7 +27,7 @@ def script_tag(html):
     for script in scripts:
         variables = re.findall(r"(let|var|const)\s(\w+)\s?=", script.text)
         objects = re.findall(r"(let|var|const)?\s?[\",\']?([\w\.]+)[\",\']?\s?:", script.text)
-        params = re.findall(r"[\?,&,;](\w+)=", str(script))
+        params = re.findall(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", str(script))
         for item in variables + objects:
             parameter.add(item[1])
         for param in params:
