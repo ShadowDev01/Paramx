@@ -88,6 +88,12 @@ function ARGUMENTS()
             group = "function"
             action = :store_true
 
+        "--ft"
+            help = "url file type: html - js - php - xml"
+            group = "function"
+            arg_type = String
+            default = "html"
+
         "-o", "--output"
             help = "save output in file"
             group = "save"

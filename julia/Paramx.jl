@@ -1,58 +1,80 @@
 include("./src/banner.jl")
 include("./src/arg.jl")
 include("./src/func.jl")
-using HTTP
-using Gumbo
 
-function URL(url::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    req::HTTP.Messages.Response = HTTP.get(url)
-    source::String = req.body |> String
-    html::HTMLDocument = parsehtml(String(req.body))
-    CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
-    OUT(o)
-end
 
-function URLS(file::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    Threads.@threads for url in readlines(file)
-        URL(url, a, i, s, w, f, e, o)
+function URL(; url::String, ft::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    source::String = read(`curl -s $url`, String)
+    if ft == "html"
+        SOURCE(source=source, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
+    elseif ft == "js"
+        JS(source=source, p=true, w=w, f=f, e=e, o=o)
+    elseif ft == "php"
+        PHP(s=source, p=true, w=w, f=f, e=e, o=o)
+    elseif ft == "xml"
+        XML(s=source, p=true, w=w, f=f, e=e, o=o)
     end
 end
 
-function SOURCE(file::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    source::String = Open(file)
-    html::HTMLDocument = parsehtml(source)
-    CALL(source, html, a=a, i=i, s=s, w=w, f=f, e=e)
+function URLS(; file::String, ft::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    Threads.@threads for url in readlines(file)
+        URL(url=url, ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
+    end
+end
+
+function SOURCE(; file::String="", source::String="", a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    if !isempty(source)
+        CALL(source=source, a=a, i=i, s=s, w=w, f=f, e=e)
+    else
+        source = Open(file)
+        CALL(source=source, a=a, i=i, s=s, w=w, f=f, e=e)
+    end
     OUT(o)
 end
 
-function REQUEST(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+function REQUEST(; file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    CALL2(source, m=p, w=w, f=f, e=e)
+    # CALL2(source, m=p, w=w, f=f, e=e)
     OUT(o)
 end
 
-function RESPONSE(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+function RESPONSE(; file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    CALL2(source, m=p, w=w, f=f, e=e)
+    # CALL2(source, m=p, w=w, f=f, e=e)
     OUT(o)
 end
 
-function JS(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    source::String = Open(file)
-    html::HTMLDocument = parsehtml("<body><script>$source</script></body>")
-    CALL(source, html, s=p, w=w, f=f, e=e)
+function JS(; file::String="", source::String="", p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    if !isempty(source)
+        source = "<body>\n<script>\n$source\n</script>\n</body>"
+        CALL(source=source, J=p, w=w, f=f, e=e)
+    else
+        File::String = Open(file)
+        source = "<body>\n<script>\n$File\n</script>\n</body>"
+        CALL(source=source, J=p, w=w, f=f, e=e)
+    end
     OUT(o)
 end
 
-function PHP(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    source::String = Open(file)
-    CALL2(source, p=p, w=w ,f=f, e=e)
+function PHP(; file::String="", s::String="", p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    if !isempty(s)
+        source = s
+        CALL(source=source, p=p, w=w, f=f, e=e)
+    else
+        source = Open(file)
+        CALL(source=source, P=p, w=w, f=f, e=e)
+    end
     OUT(o)
 end
 
-function XML(file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    source::String = Open(file)
-    CALL2(source, x=p, w=w, f=f, e=e)
+function XML(; file::String="", s::String="", p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+    if !isempty(s)
+        source = s
+        CALL(source, x=p, w=w, f=f, e=e)
+    else
+        source = Open(file)
+        CALL(source, X=p, w=w, f=f, e=e)
+    end
     OUT(o)
 end
 
@@ -68,15 +90,16 @@ function main()
     f = arguments["file-names"]
     e = arguments["extension"]
     o = arguments["output"]
+    ft = arguments["ft"]
 
-    !isnothing(arguments["url"]) && URL(arguments["url"], a, i, s, w, f, e, o)
-    !isnothing(arguments["urls"]) && URLS(arguments["urls"], a, i, s, w, f, e, o)
-    !isnothing(arguments["source"]) && SOURCE(arguments["source"], a, i, s, w, f, e, o)
-    !isnothing(arguments["request"]) && REQUEST(arguments["request"], p, w, f, e, o)
-    !isnothing(arguments["response"]) && RESPONSE(arguments["response"], p, w, f, e, o)
-    !isnothing(arguments["js"]) && JS(arguments["js"], p, w, f, e, o)
-    !isnothing(arguments["php"]) && PHP(arguments["php"], p, w, f, e, o)
-    !isnothing(arguments["xml"]) && XML(arguments["xml"], p, w, f, e, o)
+    !isnothing(arguments["url"]) && URL(url=arguments["url"], ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
+    !isnothing(arguments["urls"]) && URLS(file=arguments["urls"], ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
+    !isnothing(arguments["source"]) && SOURCE(file=arguments["source"], a=a, i=i, s=s, w=w, f=f, e=e, o=o)
+    !isnothing(arguments["request"]) && REQUEST(file=arguments["request"], p=p, w=w, f=f, e=e, o=o)
+    !isnothing(arguments["response"]) && RESPONSE(file=arguments["response"], p=p, w=w, f=f, e=e, o=o)
+    !isnothing(arguments["js"]) && JS(file=arguments["js"], p=p, w=w, f=f, e=e, o=o)
+    !isnothing(arguments["php"]) && PHP(file=arguments["php"], p=p, w=w, f=f, e=e, o=o)
+    !isnothing(arguments["xml"]) && XML(file=arguments["xml"], p=p, w=w, f=f, e=e, o=o)
 end
 
 main()
