@@ -28,7 +28,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             *** julia ***
 
-# make sure 'curl' installed on your system
+# ئake sure that 'curl' is installed on your system
 # install julia: https://julialang.org/downloads/
 # then run this commands in terminal:
 
