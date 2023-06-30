@@ -34,13 +34,13 @@ end
 
 function REQUEST(; file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    # CALL2(source, m=p, w=w, f=f, e=e)
+    CALL(source=source, RQ=p, w=w, f=f, e=e)
     OUT(o)
 end
 
 function RESPONSE(; file::String, p::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     source::String = Open(file)
-    # CALL2(source, m=p, w=w, f=f, e=e)
+    CALL(source=source, RS=p, w=w, f=f, e=e)
     OUT(o)
 end
 

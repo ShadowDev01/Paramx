@@ -61,11 +61,12 @@ function xml(source::String)
 end
 
 
-function CALL(; source::String, J::Bool=false, P::Bool=false, X::Bool=false, a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
+function CALL(; source::String, J::Bool=false, P::Bool=false, X::Bool=false, RQ::Bool=false, RS::Bool=false, a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
     @sync begin
         @async begin
             P && php(source)
             X && xml(source)
+            (RQ || RS) && (script_tag(source); input_tag(source))
             a && a_tag(source)
             i && input_tag(source)
             w && _urls(source)
