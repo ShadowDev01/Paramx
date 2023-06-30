@@ -28,6 +28,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             *** julia ***
 
+# make sure 'curl' installed on your system
 # install julia: https://julialang.org/downloads/
 # then run this commands in terminal:
 
@@ -82,6 +83,7 @@
 *  --js                  find parameters in js file
 *  --php                 find parameters in php file
 *  --xml                 find parameters in xml file
+*  --ft                  specify the url content: {html|js|php|xml}
 
 # WORK switches:
 *  -a                    find parameters in herf of <a> tag
@@ -133,6 +135,18 @@
 * find all above and save output
 ~~~
 > julia Paramx.jl -u [url] -A -e "js" "html" "xml" -o file.txt
+~~~
+* find parameters of in js file url
+~~~
+> julia Paramx.jl -u [url] --ft js
+~~~
+* find parameters of in php file url
+~~~
+> julia Paramx.jl -u [url] --ft php
+~~~
+* find parameters of in xml file url
+~~~
+> julia Paramx.jl -u [url] --ft xml
 ~~~
 * read file line by line and do same for each url
 ~~~
