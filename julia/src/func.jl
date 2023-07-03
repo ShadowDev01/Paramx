@@ -20,7 +20,7 @@ function input_tag(source::String)
 end
 
 function script_tag(source::String)
-    for script in eachmatch(r"<script.*>[\s\S]*?<\/script.*>", source)
+    for script in eachmatch(r"<script.*?>[\s\S]*?<\/script.*>", source)
         variables = eachmatch(r"(let|var|const)\s(\w+)\s?=", script.match)
         objects = eachmatch(r"(let|var|const)?\s?[\",\']?([\w\.]+)[\",\']?\s?:", script.match)
         params = eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", script.match)
@@ -59,7 +59,6 @@ function xml(source::String)
     elements = eachmatch(r"<(\w+)[\s\>]", source)
     foreach(element -> push!(parameters, element.captures[1]), elements)
 end
-
 
 function CALL(; source::String, J::Bool=false, P::Bool=false, X::Bool=false, RQ::Bool=false, RS::Bool=false, a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
     @sync begin

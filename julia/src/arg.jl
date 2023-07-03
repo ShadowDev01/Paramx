@@ -5,7 +5,7 @@ function ARGUMENTS()
         prog="Paramx",
         description="""
         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n
-        help to find [parameter names], [js variables names], [js object keys], [input tag's name & id values], [a tag's href inner parameters], [files names], [urls] \n\n***please install HTTP, Gumbo, Cascadia packages before run the program***
+        help to find [parameter names], [js variables names], [js object keys], [input tag's name & id values], [a tag's href inner parameters], [files names], [urls] \n\n
         \n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         """
     )
