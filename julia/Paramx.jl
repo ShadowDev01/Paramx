@@ -4,7 +4,12 @@ include("./src/func.jl")
 
 
 function URL(; url::String, ft::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
-    source::String = read(`curl -s $url`, String)
+    try
+        source::String = read(`curl -s $url`, String)
+    catch e
+        @error "invalid url" url
+        exit(0)
+    end 
     if ft == "html"
         SOURCE(source=source, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
     elseif ft == "js"
