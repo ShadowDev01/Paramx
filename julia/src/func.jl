@@ -60,6 +60,12 @@ function xml(source::String)
     foreach(element -> push!(parameters, element.captures[1]), elements)
 end
 
+function Headers(H::Vector{String})
+    headers_file = open("src/headers.txt", "w+") do f
+        write(f, join(H, "\n"))
+    end
+end
+
 function CALL(; source::String, J::Bool=false, P::Bool=false, X::Bool=false, RQ::Bool=false, RS::Bool=false, a::Bool=false, i::Bool=false, s::Bool=false, p::Bool=false, w::Bool=false, f::Bool=false, e::Vector{String}=["js"])
     @sync begin
         @async begin

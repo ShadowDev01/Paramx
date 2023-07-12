@@ -21,6 +21,12 @@ function ARGUMENTS()
         "-U", "--urls"
             help = "multiple targets urls in file to crawl"
             group = "source"
+        
+        "-H", "--Header"
+        help = "custom headers to send in request"
+        group = "source"
+        nargs = '*'
+        arg_type = String
 
         "-S", "--source"
             help = "saved html source code"

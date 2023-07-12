@@ -77,6 +77,7 @@
 # INPUT switches:
 *  -u, --url             single url to crawl
 *  -U, --urls            multiple urls in file to crawl
+*  -H, --Header          custom headers to send in request
 *  -S, --source          saved html source code
 *  -R, --request         sent http request in file
 *  -P, --response        received http response in file
@@ -104,7 +105,11 @@
 ~~~
 > julia -t 2 Paramx.jl -u [url] -s
 ~~~
-* find js variables names & objects keys from url
+* request to url with custom headers
+~~~
+> julia Paramx.jl -u [url] -H "key: value" "key: value"  or "key: value", "key: value"
+~~~
+* find js variables names & objects keys from url 
 ~~~
 > julia Paramx.jl -u [url] -s       or    python Paramx.jl -u [url] -s
 ~~~
