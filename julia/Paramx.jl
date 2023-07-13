@@ -107,6 +107,8 @@ function main()
     !isnothing(arguments["js"]) && JS(file=arguments["js"], p=p, w=w, f=f, e=e, o=o)
     !isnothing(arguments["php"]) && PHP(file=arguments["php"], p=p, w=w, f=f, e=e, o=o)
     !isnothing(arguments["xml"]) && XML(file=arguments["xml"], p=p, w=w, f=f, e=e, o=o)
+    
+    Write("src/headers.txt", "w+", "")
 end
 
 main()
