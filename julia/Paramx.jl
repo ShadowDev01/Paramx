@@ -3,9 +3,8 @@ include("./src/arg.jl")
 include("./src/func.jl")
 
 
-function URL(; url::String, header=Vector{String}, ft::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+function URL(; url::String, ft::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     try
-        Headers(header)
         source::String = read(`curl -s $url -H @src/headers.txt`, String)
         if ft == "html"
             SOURCE(source=source, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
@@ -22,9 +21,9 @@ function URL(; url::String, header=Vector{String}, ft::String, a::Bool, i::Bool,
     end
 end
 
-function URLS(; file::String, header=Vector{String}, ft::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
+function URLS(; file::String, ft::String, a::Bool, i::Bool, s::Bool, w::Bool, f::Bool, e::Vector{String}, o)
     Threads.@threads for url in readlines(file)
-        URL(url=url, header=header, ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
+        URL(url=url, ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
     end
 end
 
@@ -99,8 +98,9 @@ function main()
     ft = arguments["ft"]
     header = arguments["Header"]
 
-    !isnothing(arguments["url"]) && URL(url=arguments["url"], header=header, ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
-    !isnothing(arguments["urls"]) && URLS(file=arguments["urls"], header=header, ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
+    !isempty(header) && Headers(header)
+    !isnothing(arguments["url"]) && URL(url=arguments["url"], ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
+    !isnothing(arguments["urls"]) && URLS(file=arguments["urls"], ft=ft, a=a, i=i, s=s, w=w, f=f, e=e, o=o)
     !isnothing(arguments["source"]) && SOURCE(file=arguments["source"], a=a, i=i, s=s, w=w, f=f, e=e, o=o)
     !isnothing(arguments["request"]) && REQUEST(file=arguments["request"], p=p, w=w, f=f, e=e, o=o)
     !isnothing(arguments["response"]) && RESPONSE(file=arguments["response"], p=p, w=w, f=f, e=e, o=o)
