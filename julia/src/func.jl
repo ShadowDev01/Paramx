@@ -5,7 +5,7 @@ file_names = Set{AbstractString}()
 
 function a_tag(source::String)
     for a in eachmatch(r"<a(.*?)>[\s\S]*?<\/a.*>", source)
-        for param in eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", a.match)
+        for param in eachmatch(r"[\?\&\;]([\w\-\~\+]+)", a.match)
             push!(parameters, param.captures...)
         end
     end
