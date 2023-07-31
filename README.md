@@ -24,7 +24,7 @@
 * File(s)
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Install -> [python or julia]
+# Install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                             *** julia ***
 
@@ -34,38 +34,18 @@
 
 * 1. julia -e 'using Pkg; Pkg.add("HTTP"); Pkg.add("Gumbo"); Pkg.add("Cascadia"); Pkg.add("ArgParse")'
 * 2. git clone https://github.com/mrmeeseeks01/Paramx.git
-* 3. cd Paramx/julia/
+* 3. cd Paramx/
 * 4. julia Paramx.jl -h
 
 
 # or you can use docker:
 
 * 1. git clone https://github.com/mrmeeseeks01/Paramx.git
-* 2. cd Paramx/julia/
+* 2. cd Paramx/
 * 3. docker build -t paramx .
 * 4. docker run -it paramx
 * 5. press ; to enabled shell mode
 * 6. julia Paramx.jl -h
-
-
-                            *** python ***
-
-# install python: https://www.python.org/downloads/
-# then run this commands in terminal:
-
-* 1. git clone https://github.com/mrmeeseeks01/Paramx.git
-* 2. cd Paramx/python/
-* 3. pip install -r requirements.txt
-* 4. python Paramx.jl -h
-
-
-# or you can use docker:
-
-* 1. git clone https://github.com/mrmeeseeks01/Paramx.git
-* 2. cd Paramx/python/
-* 3. docker build -t paramx .
-* 4. docker run -it paramx
-* 5. python Paramx.jl -h
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
@@ -111,7 +91,7 @@
 ~~~
 * find js variables names & objects keys from url 
 ~~~
-> julia Paramx.jl -u [url] -s       or    python Paramx.jl -u [url] -s
+> julia Paramx.jl -u [url] -s
 ~~~
 * find name & id attribute values in <input> <textarea>
 ~~~
