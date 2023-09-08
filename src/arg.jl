@@ -15,13 +15,13 @@ function ARGUMENTS()
 
     @add_arg_table settings begin
         "-u", "--url"
-            help = "single target url to crawl"
-            group = "source"
+        help = "single target url to crawl"
+        group = "source"
 
         "-U", "--urls"
-            help = "multiple targets urls in file to crawl"
-            group = "source"
-        
+        help = "multiple targets urls in file to crawl"
+        group = "source"
+
         "-H", "--Header"
         help = "custom headers to send in request"
         group = "source"
@@ -29,81 +29,86 @@ function ARGUMENTS()
         arg_type = String
 
         "-S", "--source"
-            help = "saved html source code"
-            group = "source"
+        help = "saved html source code"
+        group = "source"
 
         "-R", "--request"
-            help = "sent http request in file"
-            group = "source"
+        help = "sent http request in file"
+        group = "source"
 
         "-P", "--response"
-            help = "received http response in file"
-            group = "source"
+        help = "received http response in file"
+        group = "source"
 
         "--js"
-            help = "find parameters in js file"
-            group = "source"
+        help = "find parameters in js file"
+        group = "source"
 
         "--php"
-            help = "find parameters in php file"
-            group = "source"
+        help = "find parameters in php file"
+        group = "source"
 
         "--xml"
-            help = "find parameters in xml file"
-            group = "source"
+        help = "find parameters in xml file"
+        group = "source"
 
         "-a"
-            help = "find parmeters inside of <a> tag's href"
-            group = "function"
-            action = :store_true
+        help = "find parmeters inside of <a> tag's href"
+        group = "function"
+        action = :store_true
 
         "-i"
-            help = "find <input> & <textarea> name, id parameters"
-            group = "function"
-            action = :store_true
+        help = "find <input> & <textarea> name, id parameters"
+        group = "function"
+        action = :store_true
 
         "-s", "--script"
-            help = "find <script> tag variables names & objects keys"
-            group = "function"
-            action = :store_true
+        help = "find <script> tag variables names & objects keys"
+        group = "function"
+        action = :store_true
 
         "-p"
-            help = "find parameters in request or response or js or php content"
-            group = "function"
-            action = :store_true
+        help = "find parameters in request or response or js or php content"
+        group = "function"
+        action = :store_true
 
         "-f", "--file-names"
-            help = "find file names"
-            group = "function"
-            action = :store_true
+        help = "find file names"
+        group = "function"
+        action = :store_true
 
         "-e", "--extension"
-            help = "extension(s) of files to search, must be in space separated; default is js"
-            group = "function"
-            arg_type = String
-            nargs = '+'
-            default = ["js"]
+        help = "extension(s) of files to search, must be in space separated; default is js"
+        group = "function"
+        arg_type = String
+        nargs = '+'
+        default = ["js"]
 
         "-w"
-            help = "find urls"
-            group = "function"
-            action = :store_true
+        help = "find urls"
+        group = "function"
+        action = :store_true
 
         "-A"
-            help = "do all -a -i -s -f -p -w"
-            group = "function"
-            action = :store_true
+        help = "do all -a -i -s -f -p -w"
+        group = "function"
+        action = :store_true
 
         "--ft"
-            help = "url file type: html - js - php - xml"
-            group = "function"
-            arg_type = String
-            default = "html"
+        help = "url file type: html - js - php - xml"
+        group = "function"
+        arg_type = String
+        default = "html"
+
+        "-c", "--count"
+        help = "count and sort"
+        group = "function"
+        action = :store_true
 
         "-o", "--output"
-            help = "save output in file"
-            group = "save"
-            arg_type = String
+        help = "save output in file"
+        group = "save"
+        arg_type = String
     end
     parsed_args = parse_args(ARGS, settings)
     if parsed_args["A"]

@@ -1,12 +1,30 @@
-parameters = Set{AbstractString}()
-Urls = Set{AbstractString}()
-file_names = Set{AbstractString}()
+using OrderedCollections
 
+parameters = AbstractString[]
+Urls = AbstractString[]
+file_names = AbstractString[]
+
+function HEADER(H::String)
+    res = OrderedDict{String,String}()
+    start::String, headers... = split(st, "\n", keepempty=false)
+    start2 = split(start, limit=3, keepempty=true)
+
+    get!(res, "protocol", start2[1])
+    get!(res, "status_code", start2[2])
+    get!(res, "status_text", isassigned(start2, 3) ? start2[3] : "")
+
+    for line in headers
+        for m in eachmatch(r"^(?<key>[\w\-]+)\:(?<val>.*)$", line)
+            get!(res, m["key"], m["val"])
+        end
+    end
+    return res
+end
 
 function a_tag(source::String)
     for a in eachmatch(r"<a(.*?)>[\s\S]*?<\/a.*>", source)
         for param in eachmatch(r"[\?\&\;]([\w\-\~\+]+)", a.match)
-            push!(parameters, param.captures...)
+            append!(parameters, param.captures)
         end
     end
 end
@@ -26,13 +44,13 @@ function script_tag(source::String)
         params = eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", script.match)
         foreach(variable -> push!(parameters, variable.captures[2]), variables)
         foreach(object -> push!(parameters, object.captures[2]), objects)
-        foreach(param -> push!(parameters, param.captures...), params)
+        foreach(param -> append!(parameters, param.captures), params)
     end
 end
 
 function files(source::AbstractString, extensions::Vector{String})
     ext = join(extensions, '|')
-    regex = Regex("\\/?([\\w,\\.,\\-]+\\.($ext))")
+    regex = Regex("\\/?([\\w\\.\\-]+\\.($ext))")
     files = eachmatch(regex, source)
     foreach(file -> push!(file_names, file.captures[1]), files)
 end
@@ -97,6 +115,16 @@ end
 function Write(filename::String, mode::String, data::String)
     open(filename, mode) do file
         write(file, data)
+    end
+end
+
+function COUNT()
+    data = Dict{String,Int32}()
+    for i in Iterators.flatten([parameters, Urls, file_names])
+        haskey(data, i) ? (data[i] += 1) : (data[i] = 1)
+    end
+    for (k, v) in sort(data, byvalue=true, rev=true)
+        println(k, ": ", v)
     end
 end
 
