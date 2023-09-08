@@ -70,10 +70,10 @@ end
 function XML(; file::String="", s::String="", p::Bool, w::Bool, f::Bool, e::Vector{String})
     if !isempty(s)
         source = s
-        CALL(source, x=p, w=w, f=f, e=e)
+        CALL(source=source, x=p, w=w, f=f, e=e)
     else
         source = Open(file)
-        CALL(source, X=p, w=w, f=f, e=e)
+        CALL(source=source, X=p, w=w, f=f, e=e)
     end
 end
 

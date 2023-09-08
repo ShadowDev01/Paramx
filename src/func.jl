@@ -30,29 +30,29 @@ function a_tag(source::String)
 end
 
 function input_tag(source::String)
-    for input in eachmatch(r"<(?=input|textarea).*?>", source)
-        for param in eachmatch(r"(name|id)\s?=\s?[\'\"](.+?)[\'\"]", input.match)
-            push!(parameters, param.captures[2])
+    for input in eachmatch(r"<(?:input|textarea).*?>", source)
+        for param in eachmatch(r"(?:name|id)\s?=\s?[\'\"](.+?)[\'\"]", input.match)
+            append!(parameters, param.captures)
         end
     end
 end
 
 function script_tag(source::String)
     for script in eachmatch(r"<script.*?>[\s\S]*?<\/script.*>", source)
-        variables = eachmatch(r"(let|var|const)\s(\w+)\s?=", script.match)
-        objects = eachmatch(r"(let|var|const)?\s?[\",\']?([\w\.]+)[\",\']?\s?:", script.match)
+        variables = eachmatch(r"(?:let|var|const)\s(\w+)\s?=", script.match)
+        objects = eachmatch(r"(?:let|var|const)?\s?[\",\']?([\w\.]+)[\",\']?\s?:", script.match)
         params = eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", script.match)
-        foreach(variable -> push!(parameters, variable.captures[2]), variables)
-        foreach(object -> push!(parameters, object.captures[2]), objects)
+        foreach(variable -> append!(parameters, variable.captures), variables)
+        foreach(object -> append!(parameters, object.captures), objects)
         foreach(param -> append!(parameters, param.captures), params)
     end
 end
 
 function files(source::AbstractString, extensions::Vector{String})
     ext = join(extensions, '|')
-    regex = Regex("\\/?([\\w\\.\\-]+\\.($ext))")
+    regex = Regex("\\/?([\\w\\.\\-]+\\.(?:$ext))")
     files = eachmatch(regex, source)
-    foreach(file -> push!(file_names, file.captures[1]), files)
+    foreach(file -> append!(file_names, file.captures), files)
 end
 
 function _urls(source::AbstractString)
@@ -68,14 +68,14 @@ end
 
 function php(source::AbstractString)
     variables = eachmatch(r"\$(\w+)\s?=", source)
-    GET_POST = eachmatch(r"\$_(GET|POST)\[[\",\'](.*)[\",\']\]", source)
-    foreach(var -> push!(parameters, var.captures[1]), variables)
-    foreach(g_p -> push!(parameters, g_p.captures[2]), GET_POST)
+    GET_POST = eachmatch(r"\$_(?:GET|POST)\[[\",\'](.*)[\",\']\]", source)
+    foreach(var -> append!(parameters, var.captures), variables)
+    foreach(g_p -> append!(parameters, g_p.captures), GET_POST)
 end
 
 function xml(source::String)
     elements = eachmatch(r"<(\w+)[\s\>]", source)
-    foreach(element -> push!(parameters, element.captures[1]), elements)
+    foreach(element -> append!(parameters, element.captures), elements)
 end
 
 function Headers(H::Vector{String})
