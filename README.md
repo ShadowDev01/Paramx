@@ -26,7 +26,7 @@
 
 # Install
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-                            *** julia ***
+                                             *** julia ***
 
 # make sure that 'curl' is installed on your system
 # install julia: https://julialang.org/downloads/    or    snap install julia --classic
