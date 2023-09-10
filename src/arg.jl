@@ -101,7 +101,12 @@ function ARGUMENTS()
         default = "html"
 
         "-c", "--count"
-        help = "count and sort"
+        help = "count and sort descending"
+        group = "function"
+        action = :store_true
+
+        "--cn"
+        help = "count and sort descending with number"
         group = "function"
         action = :store_true
 

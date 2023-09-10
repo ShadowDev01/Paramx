@@ -74,7 +74,8 @@
 *  -f, --file-names      find file names
 *  -e, --extension       extension(s) of files to search, must be in space separated; default is js
 *  -w                    find urls
-*  -c, --count           count and sort
+*  -c, --count           count and sort descending
+*  --cn                  count and sort descending with numbers
 *  -A                    do all -a -i -s -f -p -w
 
 # save switches:
@@ -174,7 +175,11 @@
 ~~~
 > julia Paramx.jl --xml [file.xml] -p -w -f [extension]
 ~~~
-* count and sort
+* count and sort descending
 ~~~
 > julia Paramx.jl -u [URL] -s -c
+~~~
+* count and sort descending with numbers
+~~~
+> julia Paramx.jl -u [URL] -s --cn
 ~~~

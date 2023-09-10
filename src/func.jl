@@ -40,7 +40,7 @@ end
 function script_tag(source::String)
     for script in eachmatch(r"<script.*?>[\s\S]*?<\/script.*>", source)
         variables = eachmatch(r"(?:let|var|const)\s(\w+)\s?=", script.match)
-        objects = eachmatch(r"(?:let|var|const)?\s?[\",\']?([\w\.]+)[\",\']?\s?:", script.match)
+        objects = eachmatch(r"(?:let|var|const)?\s?[\"\']?([\w\-\@\#\.]+)[\"\']?\s?:", script.match)
         params = eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", script.match)
         foreach(variable -> append!(parameters, variable.captures), variables)
         foreach(object -> append!(parameters, object.captures), objects)
@@ -118,13 +118,13 @@ function Write(filename::String, mode::String, data::String)
     end
 end
 
-function COUNT()
+function COUNT(number::Bool)
     data = Dict{String,Int32}()
     for i in Iterators.flatten([parameters, Urls, file_names])
         haskey(data, i) ? (data[i] += 1) : (data[i] = 1)
     end
     for (k, v) in sort(data, byvalue=true, rev=true)
-        println(k, ": ", v)
+        println(number ? "$k: $v" : k)
     end
 end
 

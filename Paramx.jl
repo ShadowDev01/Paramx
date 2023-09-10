@@ -91,6 +91,7 @@ function main()
     ft = arguments["ft"]
     header = arguments["Header"]
     o = arguments["output"]
+    cn = arguments["cn"]
     count = arguments["count"]
 
     !isempty(header) && Headers(header)
@@ -103,7 +104,13 @@ function main()
     !isnothing(arguments["php"]) && PHP(file=arguments["php"], p=p, w=w, f=f, e=e)
     !isnothing(arguments["xml"]) && XML(file=arguments["xml"], p=p, w=w, f=f, e=e)
 
-    count ? COUNT() : OUT(o)
+    if count
+        COUNT(false)
+    elseif cn
+        COUNT(true)
+    else
+        OUT(o)
+    end
 
     Write("src/headers.txt", "w+", "")
 end
