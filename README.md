@@ -43,9 +43,7 @@
 * 1. git clone https://github.com/mrmeeseeks01/Paramx.git
 * 2. cd Paramx/
 * 3. docker build -t paramx .
-* 4. docker run -it paramx
-* 5. press ; to enabled shell mode
-* 6. julia Paramx.jl -h
+* 4. docker run paramx
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 

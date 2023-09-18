@@ -3,4 +3,5 @@ RUN julia -e 'using Pkg; Pkg.add("HTTP"); Pkg.add("Gumbo"); Pkg.add("Cascadia");
 RUN mkdir /Paramx
 WORKDIR /Paramx/
 COPY . /Paramx/
-CMD [ "julia" ]
+ENTRYPOINT [ "julia", "/Paramx/Paramx.jl" ]
+CMD [ "-h" ]
