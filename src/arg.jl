@@ -28,6 +28,12 @@ function ARGUMENTS()
         nargs = '*'
         arg_type = String
 
+        "-X", "--method"
+        help = "http request method"
+        group = "source"
+        arg_type = String
+        default = "GET"
+
         "-S", "--source"
         help = "saved html source code"
         group = "source"
