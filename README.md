@@ -56,6 +56,7 @@
 *  -u, --url             single url to crawl
 *  -U, --urls            multiple urls in file to crawl
 *  -H, --Header          custom headers to send in request
+*  -X, --method          set http method
 *  -S, --source          saved html source code
 *  -R, --request         sent http request in file
 *  -P, --response        received http response in file
@@ -88,6 +89,10 @@
 * request to url with custom headers
 ~~~
 > julia Paramx.jl -u [url] -H "key: value" "key: value"  or "key: value", "key: value"
+~~~
+* request to url with custom http method
+~~~
+> julia Paramx.jl -u [url] -X GET
 ~~~
 * find js variables names & objects keys from url 
 ~~~
@@ -123,15 +128,15 @@
 ~~~
 * find parameters of in js file url
 ~~~
-> julia Paramx.jl -u [url] --ft js
+> julia Paramx.jl -u [url] --ft js -p
 ~~~
 * find parameters of in php file url
 ~~~
-> julia Paramx.jl -u [url] --ft php
+> julia Paramx.jl -u [url] --ft php -p
 ~~~
 * find parameters of in xml file url
 ~~~
-> julia Paramx.jl -u [url] --ft xml
+> julia Paramx.jl -u [url] --ft xml -p
 ~~~
 * read file line by line and do same for each url
 ~~~
