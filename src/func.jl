@@ -75,7 +75,7 @@ end
 
 # Send Http Request 
 function HttpRequest(url::String, method::String="GET")
-    response = read(`curl -s -k -X $method $url -H @src/Headers.txt`, String)
+    response = read(`curl -s -k -X $method $url -H @src/headers.txt`, String)
 
     # Make Empty Headers
     WriteFile("src/headers.txt", "w+", "")
