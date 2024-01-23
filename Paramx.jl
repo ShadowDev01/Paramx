@@ -160,7 +160,7 @@ function main()
     )
 
     if !isnothing(Output)
-        Write(Output, join(Data, "\n"))
+        WriteFile(Output, "w+", join(Data, "\n"))
     else
         print(join(Data, "\n"))
     end
