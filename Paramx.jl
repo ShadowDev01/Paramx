@@ -108,8 +108,8 @@ function main()
     end
 
     if !isnothing(URLS)
-        Threads.@threads for url in URLS
-            ParseHttpResponse(url, Method=Method, FileType=FileType, ATag=ATags, InputTag=InputTags, ScriptTag=ScriptTags, Urls=Urls, FileNames=FileNames, Extensions=Extensions)
+        Threads.@threads for url in readlines(URLS)
+            ParseHttpResponse(url, Method=Method, Parameters=Parameters, FileType=FileType, ATag=ATags, InputTag=InputTags, ScriptTag=ScriptTags, Urls=Urls, FileNames=FileNames, Extensions=Extensions)
         end
     end
 
