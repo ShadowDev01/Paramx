@@ -22,7 +22,7 @@ function ExtractScriptTags(source::String)
     end
 end
 
-# Find Script Tags
+# Find A Tags
 # Extract Parameters of A Tags
 function ExtractATags(source::String)
     for a in eachmatch(r"<a(.*?)>[\s\S]*?<\/a.*>", source)
@@ -32,7 +32,7 @@ function ExtractATags(source::String)
     end
 end
 
-# Find Script Tags
+# Find Input/Textarea Tags
 # Extract values of id, name Attributes
 function ExtractInputTags(source::String)
     for input in eachmatch(r"<(?:input|textarea).*?>", source)

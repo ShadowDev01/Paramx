@@ -88,7 +88,7 @@
 ~~~
 * request to url with custom headers
 ~~~
-> julia Paramx.jl -u [url] -H "key: value" "key: value"  or "key: value", "key: value"
+> julia Paramx.jl -u [url] -H "key1: value1" "key2: value2"
 ~~~
 * request to url with custom http method
 ~~~
