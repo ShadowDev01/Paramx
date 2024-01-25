@@ -1,6 +1,7 @@
 include("src/banner.jl")
 include("src/arg.jl")
 include("src/func.jl")
+include("src/logger.jl")
 
 
 function ParseHttpResponse(url::String; Method::String, FileType::String, Parameters::Bool, ATag::Bool, InputTag::Bool, ScriptTag::Bool, Urls::Bool, FileNames::Bool, Extensions::Vector{String})
@@ -72,7 +73,9 @@ function main()
     check_arguments()
 
     # CLI Arguments Passed By User
-    arguments = ARGUMENTS()
+    global arguments = ARGUMENTS()
+
+    log_message()
 
     # Extract Passed Arguments
     ATags = arguments["a"]
@@ -109,7 +112,12 @@ function main()
 
     if !isnothing(URLS)
         Threads.@threads for url in readlines(URLS)
-            ParseHttpResponse(url, Method=Method, Parameters=Parameters, FileType=FileType, ATag=ATags, InputTag=InputTags, ScriptTag=ScriptTags, Urls=Urls, FileNames=FileNames, Extensions=Extensions)
+            try
+                ParseHttpResponse(url, Method=Method, Parameters=Parameters, FileType=FileType, ATag=ATags, InputTag=InputTags, ScriptTag=ScriptTags, Urls=Urls, FileNames=FileNames, Extensions=Extensions)
+            catch e
+                @error """something wrong with $(arguments["urls"])"""
+                exit(0)
+            end
         end
     end
 
@@ -158,6 +166,8 @@ function main()
         Extracted_URLS,
         Extracted_FILE_NAMES
     )
+
+    @info "$(length(Data)) Items Found"
 
     if !isnothing(Output)
         WriteFile(Output, "w+", join(Data, "\n"))
