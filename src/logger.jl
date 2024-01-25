@@ -61,7 +61,7 @@ function log_message()
 
     if arguments["a"]
         message.option_message *= """
-        ✅ find a tags id
+        ✅ find <a> tags href parameters
         """
     end
     if arguments["script"]
@@ -76,7 +76,7 @@ function log_message()
     end
     if arguments["i"]
         message.option_message *= """
-        ✅ find Input/Textarea id-clss
+        ✅ find Input/Textarea [name - id]
         """
     end
     if arguments["w"]
