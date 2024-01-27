@@ -50,13 +50,10 @@ function ExtractFileNames(source::AbstractString, extensions::Vector{String})
 end
 
 function ExtractUrls(source::AbstractString)
-    tags = readlines("src/html_tags.txt")
-    regex = r"""(\w+:/)?(/[^\s\(\)\"\'\`\<\>\*\\]+)"""
+    regex = r"""[\w\/\:\\]+?(/+[^\s\(\)\"\'\`\<\>\*\\]+)"""
     urls = eachmatch(regex, source)
     for url in urls
-        if url.match ∉ tags
             push!(Extracted_URLS, url.match)
-        end
     end
 end
 
