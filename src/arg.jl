@@ -47,15 +47,15 @@ function ARGUMENTS()
         group = "source"
 
         "--js"
-        help = "find parameters in js file"
+        help = "find parameters in saved js file"
         group = "source"
 
         "--php"
-        help = "find parameters in php file"
+        help = "find parameters in saved php file"
         group = "source"
 
         "--xml"
-        help = "find parameters in xml file"
+        help = "find parameters in saved xml file"
         group = "source"
 
         "-a"
@@ -68,7 +68,7 @@ function ARGUMENTS()
         group = "function"
         action = :store_true
 
-        "-s", "--script"
+        "-s"
         help = "find <script> tag variables names & objects keys"
         group = "function"
         action = :store_true
@@ -78,12 +78,12 @@ function ARGUMENTS()
         group = "function"
         action = :store_true
 
-        "-f", "--file-names"
+        "-f"
         help = "find file names"
         group = "function"
         action = :store_true
 
-        "-e", "--extension"
+        "-e"
         help = "extension(s) of files to search, must be in space separated; default is js"
         group = "function"
         arg_type = String
@@ -106,7 +106,7 @@ function ARGUMENTS()
         arg_type = String
         default = "html"
 
-        "-c", "--count"
+        "-c"
         help = "count and sort descending"
         group = "function"
         action = :store_true
@@ -123,7 +123,7 @@ function ARGUMENTS()
     end
     parsed_args = parse_args(ARGS, settings)
     if parsed_args["A"]
-        for arg in ["a", "i", "script", "w", "file-names", "p"]
+        for arg in ["a", "i", "s", "w", "f", "p"]
             parsed_args[arg] = true
         end
     end

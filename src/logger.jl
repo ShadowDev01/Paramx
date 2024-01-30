@@ -12,89 +12,89 @@ end
 function log_message()
     message = Message("", "", "")
 
-    if Bool(arguments["url"])
+    if Bool(args["url"])
         message.http_source = """
-        🔗 url     => $(arguments["url"])
-        📌 method  => $(arguments["method"])
-        📝 headers => $(arguments["Header"])
-        💾 type    => $(arguments["ft"])
+        🔗 url     => $(args["url"])
+        📌 method  => $(args["method"])
+        📝 headers => $(args["Header"])
+        💾 type    => $(args["ft"])
         """
-    elseif Bool(arguments["urls"])
+    elseif Bool(args["urls"])
         message.http_source = """
-        🔗 urls    => $(arguments["urls"])
-        📌 method  => $(arguments["method"])
-        📝 headers => $(arguments["Header"])
-        💾 type    => $(arguments["ft"])
+        🔗 urls    => $(args["urls"])
+        📌 method  => $(args["method"])
+        📝 headers => $(args["Header"])
+        💾 type    => $(args["ft"])
         """
-    elseif Bool(arguments["source"])
+    elseif Bool(args["source"])
         message.file_source = """
-        📄 file    => $(arguments["source"])
+        📄 file    => $(args["source"])
         💾 type    => "html"
         """
-    elseif Bool(arguments["request"])
+    elseif Bool(args["request"])
         message.file_source = """
-        📄 file    => $(arguments["request"])
+        📄 file    => $(args["request"])
         💾 type    => "Any"
         """
-    elseif Bool(arguments["response"])
+    elseif Bool(args["response"])
         message.file_source = """
-        📄 file    => $(arguments["source"])
+        📄 file    => $(args["source"])
         💾 type    => "Any"
         """
-    elseif Bool(arguments["php"])
+    elseif Bool(args["php"])
         message.file_source = """
-        📄 file    => $(arguments["php"])
+        📄 file    => $(args["php"])
         💾 type    => "php"
         """
-    elseif Bool(arguments["xml"])
+    elseif Bool(args["xml"])
         message.file_source = """
-        📄 file    => $(arguments["xml"])
+        📄 file    => $(args["xml"])
         💾 type    => "xml"
         """
-    elseif Bool(arguments["js"])
+    elseif Bool(args["js"])
         message.file_source = """
-        📄 file    => $(arguments["js"])
+        📄 file    => $(args["js"])
         💾 type    => "js"
         """
     end
 
 
-    if arguments["a"]
+    if args["a"]
         message.option_message *= """
         ✅ find <a> tags href parameters
         """
     end
-    if arguments["script"]
+    if args["s"]
         message.option_message *= """
         ✅ find javascript parameters
         """
     end
-    if arguments["p"]
+    if args["p"]
         message.option_message *= """
         ✅ find parameters
         """
     end
-    if arguments["i"]
+    if args["i"]
         message.option_message *= """
         ✅ find Input/Textarea [name - id]
         """
     end
-    if arguments["w"]
+    if args["w"]
         message.option_message *= """
         ✅ find url/path
         """
     end
-    if arguments["file-names"]
+    if args["f"]
         message.option_message *= """
         ✅ find file names
-        ✅ exts $(arguments["extension"])
+        ✅ exts $(args["e"])
         """
     end
-    if arguments["cn"]
+    if args["cn"]
         message.option_message *= """
         ✅ sort & count items descently
         """
-    elseif arguments["count"]
+    elseif args["c"]
         message.option_message *= """
         ✅ sort items descently
         """

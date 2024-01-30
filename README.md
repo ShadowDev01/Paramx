@@ -55,25 +55,25 @@
 # INPUT switches:
 *  -u, --url             single url to crawl
 *  -U, --urls            multiple urls in file to crawl
-*  -H, --Header          custom headers to send in request
+*  -H, --Header          custom headers to send in http request
 *  -X, --method          set http method
 *  -S, --source          saved html source code
 *  -R, --request         sent http request in file
 *  -P, --response        received http response in file
-*  --js                  find parameters in js file
-*  --php                 find parameters in php file
-*  --xml                 find parameters in xml file
+*  --js                  find parameters ins saved js file
+*  --php                 find parameters in php saved file
+*  --xml                 find parameters in xml saved file
 *  --ft                  specify the url content: {html|js|php|xml}
 
 # WORK switches:
 *  -a                    find parameters in herf of <a> tag
 *  -i                    find <input> <textarea> tag parameters [name, id]
-*  -s, --script          find <script> tag variables names & objects keys
+*  -s                    find <script> tag variables names & objects keys
 *  -p                    find parameters in request or response or js or php content
-*  -f, --file-names      find file names
-*  -e, --extension       extension(s) of files to search, must be in space separated; default is js
-*  -w                    find urls
-*  -c, --count           count and sort descending
+*  -f                    find file names
+*  -e                    extension(s) of files to search, must be in space separated; default is js
+*  -w                    find urls & paths
+*  -c                    count and sort descending
 *  --cn                  count and sort descending with numbers
 *  -A                    do all -a -i -s -f -p -w
 

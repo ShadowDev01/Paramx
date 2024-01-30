@@ -110,7 +110,7 @@ function CountItems(number::Bool)
         haskey(data, item) ? (data[item] += 1) : (data[item] = 1)
     end
     for (key, value) in sort(data, byvalue=true, rev=true)
-        println(number ? "$key: $value" : key)
+        println(number ? "$key $value" : key)
     end
 end
 
