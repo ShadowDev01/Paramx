@@ -12,6 +12,7 @@
 * <a> tags href inner parameters
 * js variables names
 * js object keys
+* js function parameters name
 * php variables names
 * php $_GET, $_POST valuse
 * xml elements name

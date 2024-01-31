@@ -13,12 +13,18 @@ function ExtractScriptTags(source::String)
     for script in eachmatch(r"<script.*?>[\s\S]*?<\/script.*>", source)
 
         variables = eachmatch(r"(?:let|var|const)\s(\$?\w+)\s?=", script.match)
-        objects = eachmatch(r"(?:let|var|const)?\s?[\"\']?([\w\-\@\#\.]+)[\"\']?\s?:", script.match)
+        objects = eachmatch(r"(?:let|var|const)?\s?(?<=[\"\'])([\w\@\#\\$-\.]+)(?=[\"\']\s?:)", script.match)
+        funcArgs = eachmatch(Regex(".*\\(\\s*[\"']?([\\w\\-]+)[\"']?\\s*(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?\\)"), script.match)
         params = eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", script.match)
 
         foreach(variable -> append!(Extracted_Variables, variable.captures), variables)
         foreach(object -> append!(Extracted_JS_Objects, object.captures), objects)
         foreach(param -> append!(Extracted_Parameters, param.captures), params)
+        for args in funcArgs
+            for arg in keepat!(args.captures, [1, 3, 5, 7, 9, 11, 13, 15, 17])
+                isnothing(arg) || push!(Extracted_Parameters, arg)
+            end
+        end
     end
 end
 
