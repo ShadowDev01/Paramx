@@ -98,6 +98,10 @@ function log_message()
         message.option_message *= """
         ✅ sort items descently
         """
+    elseif args["T"]
+        message.option_message *= """
+        ✅ tag params type
+        """
     end
 
     @info "~~~ Paramx ~~~\n\n" * message.http_source * message.file_source * "\n" * message.option_message

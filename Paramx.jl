@@ -3,7 +3,6 @@ include("src/arg.jl")
 include("src/func.jl")
 include("src/logger.jl")
 
-check_arguments()
 const args = ARGUMENTS()
 
 function ParseHttpResponse(url::String)
@@ -129,14 +128,22 @@ function main()
     elseif args["cn"]
         CountItems(true)
         exit(0)
+    elseif args["T"]
+        TagParameters()
+        exit(0)
     end
 
     Data = union(
-        Extracted_Parameters,
-        Extracted_JS_Objects,
-        Extracted_Variables,
-        Extracted_URLS,
-        Extracted_FILE_NAMES
+        EXTRACTED_JS_VARIABLES,
+        EXTRACTED_JS_OBJECTS,
+        EXTRACTED_JS_FUNC_ARGS,
+        EXTRACTED_INPUT_TEXTAREA_ID_NAME,
+        EXTRACTED_URLS_OR_PATHS,
+        EXTRACTED_QUERY_KEYS,
+        EXTRACTED_PHP_VARIABLES,
+        EXTRACTED_PHP_GET_POST,
+        EXTRACTED_XML_ELEMENTS,
+        EXTRACTED_FILE_NAMES
     )
 
     @info "$(length(Data)) Items Found"

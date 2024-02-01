@@ -116,6 +116,11 @@ function ARGUMENTS()
         group = "function"
         action = :store_true
 
+        "-T"
+        help = "Tag parameter to show where it found"
+        group = "function"
+        action = :store_true
+
         "-o", "--output"
         help = "save output in file"
         group = "save"
@@ -128,13 +133,4 @@ function ARGUMENTS()
         end
     end
     return parsed_args
-end
-
-function check_arguments()
-    arguments = ARGUMENTS()
-    source_args = [arguments[arg] for arg in ["url", "urls", "source", "request", "response"]]
-    if count(arg -> !isnothing(arg), source_args) > 1
-        @warn "you can't use -u\\-U\\-S\\-r\\-p at same time"
-        exit(0)
-    end
 end

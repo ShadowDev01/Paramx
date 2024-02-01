@@ -76,6 +76,7 @@
 *  -w                    find urls & paths
 *  -c                    count and sort descending
 *  --cn                  count and sort descending with numbers
+*  -T                    Tag parameter to show where it found
 *  -A                    do all -a -i -s -f -p -w
 
 # save switches:
@@ -186,4 +187,8 @@
 * count and sort descending with numbers
 ~~~
 > julia Paramx.jl -u [URL] -s --cn
+~~~
+* Tag parameter to show where it found
+~~~
+> julia Paramx.jl -u [URL] -A -T
 ~~~
