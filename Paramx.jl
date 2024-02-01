@@ -3,6 +3,7 @@ include("src/arg.jl")
 include("src/func.jl")
 include("src/logger.jl")
 
+# user passed cli arguments
 const args = ARGUMENTS()
 
 function ParseHttpResponse(url::String)
