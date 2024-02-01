@@ -123,17 +123,6 @@ function main()
         HtmlResponseText(HtmlResponseFile)
     end
 
-    if args["c"]
-        CountItems(false)
-        exit(0)
-    elseif args["cn"]
-        CountItems(true)
-        exit(0)
-    elseif args["T"]
-        TagParameters()
-        exit(0)
-    end
-
     Data = union(
         EXTRACTED_JS_VARIABLES,
         EXTRACTED_JS_OBJECTS,
@@ -147,8 +136,21 @@ function main()
         EXTRACTED_FILE_NAMES
     )
 
+    if args["c"]
+        CountItems(false)
+        exit(0)
+    elseif args["cn"]
+        CountItems(true)
+        exit(0)
+    elseif args["T"]
+        TagParameters()
+        !isnothing(args["output"]) && @goto save
+        exit(0)
+    end
+
     @info "$(length(Data)) Items Found"
 
+    @label save
     if !isnothing(args["output"])
         WriteFile(args["output"], "w+", join(Data, "\n"))
         @info "data saved in file: $(args["output"])"
