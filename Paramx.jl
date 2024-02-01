@@ -148,7 +148,7 @@ function main()
         exit(0)
     end
 
-    @info "$(length(Data)) Items Found"
+    @info "\033[33m$(length(Data)) Items Found\033[0m"
 
     @label save
     if !isnothing(args["output"])

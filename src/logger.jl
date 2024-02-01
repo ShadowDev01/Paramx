@@ -14,10 +14,10 @@ function log_message()
 
     if Bool(args["url"])
         message.http_source = """
-        🔗 url     => $(args["url"])
-        📌 method  => $(args["method"])
-        📝 headers => $(args["Header"])
-        💾 type    => $(args["ft"])
+        🔗 url     => \033[94m$(args["url"])\033[0m
+        📌 method  => \033[93m$(args["method"])\033[0m
+        📝 headers => \033[93m$(args["Header"])\033[0m
+        💾 type    => \033[93m$(args["ft"])\033[0m
         """
     elseif Bool(args["urls"])
         message.http_source = """
