@@ -41,7 +41,7 @@ end
 function PHPSource(source::String)
     args["p"] && ExtractPHPVariables(source)
     args["w"] && ExtractUrls(source)
-    args["f"] && ExtractFileNames(source,  args["e"])
+    args["f"] && ExtractFileNames(source, args["e"])
 end
 
 # Extract Data From Given XML Source
@@ -57,7 +57,7 @@ function HtmlRequestText(source::String)
         ExtractInputTags(source)
     end
     args["w"] && ExtractUrls(source)
-    args["f"] && ExtractFileNames(source,  args["e"])
+    args["f"] && ExtractFileNames(source, args["e"])
 end
 
 function HtmlResponseText(source::String)
@@ -66,7 +66,7 @@ function HtmlResponseText(source::String)
         ExtractInputTags(source)
     end
     args["w"] && ExtractUrls(source)
-    args["f"] && ExtractFileNames(source,  args["e"])
+    args["f"] && ExtractFileNames(source, args["e"])
 end
 
 
@@ -143,7 +143,7 @@ function main()
         CountItems(true)
         exit(0)
     elseif args["T"]
-        TagParameters()
+        TagParameters(Data)
         !isnothing(args["output"]) && @goto save
         exit(0)
     end

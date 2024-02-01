@@ -1,4 +1,5 @@
 using OrderedCollections
+using PrettyTables
 
 
 # Extracted Parameters Of JS
@@ -76,7 +77,7 @@ function ExtractUrls(source::AbstractString)
     regex = r"""[\w\/\:\\]+?(/+[^\s\(\)\"\'\`\<\>\*\\]+)"""
     urls = eachmatch(regex, source)
     for url in urls
-            push!(EXTRACTED_URLS_OR_PATHS, url.match)
+        push!(EXTRACTED_URLS_OR_PATHS, url.match)
     end
 end
 
@@ -95,6 +96,11 @@ end
 
 # Send Http Request 
 function HttpRequest(url::String, method::String="GET")
+    method = uppercase(method)
+    if method ∉ ("GET", "POST", "PUT", "HEAD", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH")
+        @warn "Http methods: \033[32mGET POST PUT HEAD DELETE CONNECT OPTIONS TRACE PATCH\033[0m\nyour method: \033[31m$(method)\033[0m 🤔"
+    end
+
     response = read(`curl -s -k -X $method $url -H @src/headers.txt`, String)
 
     # Make Empty Headers
@@ -137,35 +143,23 @@ function CountItems(number::Bool)
         haskey(data, item) ? (data[item] += 1) : (data[item] = 1)
     end
     for (key, value) in sort(data, byvalue=true, rev=true)
-        println(number ? "$key $value" : key)
+        println(number ? "$key \033[33m$value\033[0m" : key)
     end
 end
 
-function TagParameters()
-    for param in union(
-        EXTRACTED_JS_VARIABLES,
-        EXTRACTED_JS_OBJECTS,
-        EXTRACTED_JS_FUNC_ARGS,
-        EXTRACTED_INPUT_TEXTAREA_ID_NAME,
-        EXTRACTED_URLS_OR_PATHS,
-        EXTRACTED_QUERY_KEYS,
-        EXTRACTED_PHP_VARIABLES,
-        EXTRACTED_PHP_GET_POST,
-        EXTRACTED_XML_ELEMENTS,
-        EXTRACTED_FILE_NAMES
-    )
-    
-    print(param, "\t")
-    param ∈ EXTRACTED_JS_VARIABLES && (printstyled("js_var", color=:yellow, bold=true, reverse=true, italic=true); print("  "))
-    param ∈ EXTRACTED_JS_OBJECTS && (printstyled("js_obj", color=:light_yellow, bold=true, reverse=true, italic= true); print("  "))
-    param ∈ EXTRACTED_JS_FUNC_ARGS && (printstyled("js_arg", color=:yellow, bold=true, reverse=true, italic= true); print("  "))
-    param ∈ EXTRACTED_INPUT_TEXTAREA_ID_NAME && (printstyled("form_id_name", color=:red, bold=true, reverse=true, italic= true); print("  "))
-    param ∈ EXTRACTED_URLS_OR_PATHS && (printstyled("url/path", color=:blue, bold=true, reverse=true, italic= true); print("  "))
-    param ∈ EXTRACTED_QUERY_KEYS && (printstyled("query_key", color=:magenta, bold=true, reverse=true, italic= true); print("  "))
-    param ∈ EXTRACTED_PHP_VARIABLES && (printstyled("php_var", color=:magenta, bold=true, reverse=true, italic= true); print("  "))
-    param ∈ EXTRACTED_PHP_GET_POST && (printstyled("php_key", color=:light_magenta, bold=true, reverse=true, italic= true); print("  "))
-    param ∈ EXTRACTED_XML_ELEMENTS && (printstyled("xml", color=:cyan, bold=true, reverse=true, italic= true); print("  "))
-    param ∈ EXTRACTED_FILE_NAMES && (printstyled("file", color=:green, bold=true, reverse=true, italic= true); print("  "))
-    println()
+function TagParameters(Data::Vector{AbstractString})
+    for param in Data
+        print(param, "\t")
+        param ∈ EXTRACTED_JS_VARIABLES && (printstyled("js_var", color=:yellow, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_JS_OBJECTS && (printstyled("js_obj", color=:light_yellow, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_JS_FUNC_ARGS && (printstyled("js_arg", color=:yellow, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_INPUT_TEXTAREA_ID_NAME && (printstyled("form_id_name", color=:red, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_URLS_OR_PATHS && (printstyled("url/path", color=:blue, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_QUERY_KEYS && (printstyled("query_key", color=:magenta, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_PHP_VARIABLES && (printstyled("php_var", color=:magenta, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_PHP_GET_POST && (printstyled("php_key", color=:light_magenta, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_XML_ELEMENTS && (printstyled("xml", color=:cyan, bold=true, reverse=true, italic=true); print("  "))
+        param ∈ EXTRACTED_FILE_NAMES && (printstyled("file", color=:green, bold=true, reverse=true, italic=true); print("  "))
+        println()
     end
 end
