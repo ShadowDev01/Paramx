@@ -29,8 +29,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                                              *** julia ***
 
-# make sure that 'curl' is installed on your system
-# install julia: https://julialang.org/downloads/    or    snap install julia --classic
+# install julia: https://julialang.org/downloads/  or  snap install julia --classic
 # then run this commands in terminal:
 
 * 1. julia -e 'using Pkg; Pkg.add("HTTP"); Pkg.add("Gumbo"); Pkg.add("Cascadia"); Pkg.add("ArgParse"); Pkg.add("OrderedCollections")'

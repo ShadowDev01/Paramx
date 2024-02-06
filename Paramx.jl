@@ -7,7 +7,7 @@ include("src/logger.jl")
 const args = ARGUMENTS()
 
 function ParseHttpResponse(url::String)
-    response::String = HttpRequest(url, args["method"])
+    response::String = SendHttpRequest(url, args["method"], args["Header"])
 
     if args["ft"] == "html"
         HtmlSource(response)
@@ -73,9 +73,6 @@ end
 function main()
 
     log_message()
-
-    # # Manage Passed Headers
-    WriteFile("src/headers.txt", "w+", join(args["Header"], "\n"))
 
     # Call Functions
     if !isnothing(args["url"])
@@ -153,7 +150,7 @@ function main()
     @label save
     if !isnothing(args["output"])
         WriteFile(args["output"], "w+", join(Data, "\n"))
-        @info "data saved in file: $(args["output"])"
+        @info "data saved in file: $colorGreen$(args["output"])$colorReset"
     else
         print(join(Data, "\n"))
     end

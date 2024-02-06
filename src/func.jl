@@ -1,5 +1,24 @@
 using OrderedCollections
+using Downloads
 
+const colorReset = "\033[0m"
+const colorRed = "\033[31m"
+const colorLightRed = "\033[91m"
+const colorGreen = "\033[32m"
+const colorYellow = "\033[33m"
+const colorLightYellow = "\033[93m"
+const colorBlue = "\033[34m"
+const colorLightBlue = "\033[94m"
+const colorCyan = "\033[96m"
+const colorMagenta = "\033[35m"
+const colorLightMagenta = "\033[95m"
+const colorWhite = "\033[97m"
+const colorBlack = "\033[30m"
+const textItalic = "\033[3m"
+const textBold = "\033[1m"
+const textBox = "\033[7m"
+const textBlink = "\033[5m"
+const textUnderline = "\033[4m"
 
 # Extracted Parameters Of JS
 EXTRACTED_JS_VARIABLES = AbstractString[]
@@ -93,19 +112,35 @@ function ExtractXMLElemnts(source::String)
     foreach(element -> append!(EXTRACTED_XML_ELEMENTS, element.captures), elements)
 end
 
+function ParseHttpHeaders(headers::Vector{String})
+    parsed_headers = []
+    for header in headers
+        if occursin(":", header)
+            key, val = split(header, ":", limit=2)
+            push!(parsed_headers, strip(key) => strip(val))
+        else
+            @warn "$colorLightRed`$header`$colorReset is missing ':' in custom headers"
+        end
+    end
+    return parsed_headers
+end
+
 # Send Http Request 
-function HttpRequest(url::String, method::String="GET")
+function SendHttpRequest(url::String, method::String="GET", headers::Vector{String}=[])
     method = uppercase(method)
     if method ∉ ("GET", "POST", "PUT", "HEAD", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH")
-        @warn "Http methods: \033[32mGET POST PUT HEAD DELETE CONNECT OPTIONS TRACE PATCH\033[0m\nyour method: \033[31m$(method)\033[0m 🤔"
+        @warn "Http methods: $colorGreen GET POST PUT HEAD DELETE CONNECT OPTIONS TRACE PATCH$colorReset\nyour method: $colorLightRed$(method)$colorReset 🤔"
     end
 
-    response = read(`curl -s -k -X $method $url -H @src/headers.txt`, String)
+    @info "Sending Http Request 📨"
+    Downloads.request(
+        url,
+        method=method,
+        headers=ParseHttpHeaders(headers),
+        output="src/body"
+    )
 
-    # Make Empty Headers
-    WriteFile("src/headers.txt", "w+", "")
-
-    return response
+    return ReadFile("src/body")
 end
 
 function ReadFile(FilePath::String)
@@ -142,7 +177,7 @@ function CountItems(number::Bool)
         haskey(data, item) ? (data[item] += 1) : (data[item] = 1)
     end
     for (key, value) in sort(data, byvalue=true, rev=true)
-        println(number ? "$key \033[33m$value\033[0m" : key)
+        println(number ? "$key $colorYellow$value$colorReset" : key)
     end
 end
 
@@ -162,3 +197,20 @@ function TagParameters(Data::Vector{AbstractString})
         println()
     end
 end
+
+#=
+# Send Http Request 
+function HttpRequest(url::String, method::String="GET")
+    method = uppercase(method)
+    if method ∉ ("GET", "POST", "PUT", "HEAD", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH")
+        @warn "Http methods: \033[32mGET POST PUT HEAD DELETE CONNECT OPTIONS TRACE PATCH\033[0m\nyour method: \033[31m$(method)\033[0m 🤔"
+    end
+
+    response = read(`curl -s -k -X $method $url -H @src/headers.txt`, String)
+
+    # Make Empty Headers
+    WriteFile("src/headers.txt", "w+", "")
+
+    return response
+end
+=#
