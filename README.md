@@ -51,6 +51,7 @@
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # optional arguments:
 *  -h, --help            show this help message and exit
+*  --version             show version information and exit
 
 # INPUT switches:
 *  -u, --url             single url to crawl
@@ -77,6 +78,7 @@
 *  --cn                  count and sort descending with numbers
 *  -T                    Tag parameter to show where it found
 *  -A                    do all -a -i -s -f -p -w
+*  --silent              do not print additional information (default: false)
 
 # save switches:
 *  -o, --output          save output in file
