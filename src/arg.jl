@@ -8,7 +8,7 @@ function ARGUMENTS()
         help to find [parameter names], [js variables names], [js object keys], [input tag's name & id values], [a tag's href inner parameters], [files names], [urls] \n\n
         \n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         """,
-        version="v1.0.2",
+        version="v1.0.3",
         add_version=true
     )
     add_arg_group!(settings, "source switches", "source")
@@ -121,6 +121,10 @@ function ARGUMENTS()
         "-T"
         help = "Tag parameter to show where it found"
         group = "function"
+        action = :store_true
+
+        "--silent"
+        help = "Do not print additional information (default: false)"
         action = :store_true
 
         "-o", "--output"

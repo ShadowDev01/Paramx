@@ -108,7 +108,7 @@ function ExtractPHPVariables(source::AbstractString)
 end
 
 function ExtractXMLElemnts(source::String)
-    elements = eachmatch(r"<(\w+)[\s\>]", source)
+    elements = eachmatch(r"(?<=\<)(\w+)", source)
     foreach(element -> append!(EXTRACTED_XML_ELEMENTS, element.captures), elements)
 end
 
@@ -132,7 +132,6 @@ function SendHttpRequest(url::String, method::String="GET", headers::Vector{Stri
         @warn "Http methods: $colorGreen GET POST PUT HEAD DELETE CONNECT OPTIONS TRACE PATCH$colorReset\nyour method: $colorLightRed$(method)$colorReset 🤔"
     end
 
-    @info "Sending Http Request 📨"
     Downloads.request(
         url,
         method=method,

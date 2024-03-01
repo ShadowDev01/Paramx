@@ -71,8 +71,9 @@ end
 
 
 function main()
+    args["silent"] || banner()
 
-    log_message()
+    args["silent"] || log_message()
 
     # Call Functions
     if !isnothing(args["url"])
@@ -145,12 +146,12 @@ function main()
         exit(0)
     end
 
-    @info "\033[33m$(length(Data)) Items Found\033[0m"
+    args["silent"] || @info "\033[33m$(length(Data)) Items Found\033[0m"
 
     @label save
     if !isnothing(args["output"])
         WriteFile(args["output"], "w+", join(Data, "\n"))
-        @info "data saved in file: $colorGreen$(args["output"])$colorReset"
+        args["silent"] || @info "data saved in file: $colorGreen$(args["output"])$colorReset"
     else
         print(join(Data, "\n"))
     end
