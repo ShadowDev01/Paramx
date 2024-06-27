@@ -8,7 +8,7 @@ function ARGUMENTS()
         help to find [parameter names], [js variables names], [js object keys], [input tag's name & id values], [a tag's href inner parameters], [files names], [urls] \n\n
         \n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         """,
-        version="v1.0.3",
+        version="v1.0.4",
         add_version=true
     )
     add_arg_group!(settings, "source switches", "source")
