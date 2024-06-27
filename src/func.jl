@@ -1,4 +1,3 @@
-using Pkg: Pkg
 using OrderedCollections
 using Downloads
 
@@ -42,24 +41,6 @@ EXTRACTED_XML_ELEMENTS = AbstractString[]
 
 # Extracted File Names With Given Extensions
 EXTRACTED_FILE_NAMES = AbstractString[]
-
-
-# check dependencies installed
-function Check_Dependencies()
-	installed_packages = Pkg.project().dependencies
-	required_packages  = ("JSON", "ArgParse", "OrderedCollections", "Cascadia", "Gumbo", "HTTP")
-	prepare_to_install = String[]
-
-	for package in required_packages
-		haskey(installed_packages, package) || push!(prepare_to_install, package)
-	end
-
-	if !isempty(prepare_to_install)
-		@info "Installing Prerequisites..."
-		Pkg.add(prepare_to_install)
-		@info "Prerequisites Installed ✔"
-	end
-end
 
 
 # Find Script Tags

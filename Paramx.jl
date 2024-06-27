@@ -1,10 +1,13 @@
-include("src/banner.jl")
+include("src/package.jl")
 include("src/arg.jl")
+include("src/banner.jl")
 include("src/func.jl")
 include("src/logger.jl")
 
+
 # user passed cli arguments
 const args = ARGUMENTS()
+
 
 function ParseHttpResponse(url::String)
 	response::String = SendHttpRequest(url, args["method"], args["Header"])
@@ -71,7 +74,6 @@ end
 
 
 function main()
-	Check_Dependencies()
 
 	args["silent"] || banner()
 	args["silent"] || log_message()
