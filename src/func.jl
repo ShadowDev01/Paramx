@@ -137,14 +137,18 @@ function SendHttpRequest(url::String, method::String = "GET", headers::Vector{St
 		@warn "Http methods: $colorGreen GET POST PUT HEAD DELETE CONNECT OPTIONS TRACE PATCH$colorReset\nyour method: $colorLightRed$(method)$colorReset 🤔"
 	end
 
-	Downloads.request(
-		url,
-		method = method,
-		headers = ParseHttpHeaders(headers),
-		output = "src/body",
-	)
-
-	return ReadFile("src/body")
+	try
+		Downloads.request(
+			url,
+			method = method,
+			headers = ParseHttpHeaders(headers),
+			output = "src/body",
+		)
+		return ReadFile("src/body")
+	catch err
+		isa(err, RequestError) && @warn sprint(showerror, err.message)
+		exit(0)
+	end
 end
 
 function ReadFile(FilePath::String)
