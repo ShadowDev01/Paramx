@@ -20,58 +20,79 @@ const textBox = "\033[7m"
 const textBlink = "\033[5m"
 const textUnderline = "\033[4m"
 
-# Extracted Parameters Of JS
+# JS Extracted Parameters
 EXTRACTED_JS_VARIABLES = AbstractString[]
 EXTRACTED_JS_OBJECTS = AbstractString[]
 EXTRACTED_JS_FUNC_ARGS = AbstractString[]
 
-# Extracted Parameters Of Forms
+# Form Tag's Extracted Parameters
 EXTRACTED_INPUT_TEXTAREA_ID_NAME = AbstractString[]
 
-# Extracted Parameters Of URLS/PATHS
+# URLS/PATHS Extracted With Parameters
 EXTRACTED_URLS_OR_PATHS = AbstractString[]
 EXTRACTED_QUERY_KEYS = AbstractString[]
 
-# Extracted Parameters Of PHP
+# PHP Extracted Parameters 
 EXTRACTED_PHP_VARIABLES = AbstractString[]
 EXTRACTED_PHP_GET_POST = AbstractString[]
 
-# Extracted Parameters Of XML
+# XML Extracted Parameters
 EXTRACTED_XML_ELEMENTS = AbstractString[]
 
 # Extracted File Names With Given Extensions
 EXTRACTED_FILE_NAMES = AbstractString[]
 
 
-# Find Script Tags
-# Extract Variable Names, Object Keys & Parameters
-function ExtractScriptTags(source::String)
+# Find Script Tags & Extract Parameters
+function extract_script_tags(source::String)
 	for script in eachmatch(r"<script.*?>[\s\S]*?<\/script.*>", source)
+		script_match::String = script.match
 
-		variables = eachmatch(r"(?:let|var|const)\s(\$?\w+)\s?=", script.match)
-		objects = eachmatch(r"(?:let|var|const)?\s?(?<=[\"\'])([\w\@\#\\$-\.]+)(?=[\"\']\s?:)", script.match)
-		funcArgs = eachmatch(
-			Regex(
-				".*\\(\\s*[\"']?([\\w\\-]+)[\"']?\\s*(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?\\)",
-			),
-			script.match,
-		)
-		params = eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", script.match)
+		extract_js_variables(script_match)
+		extract_js_objects_keys(script_match)
+		extract_js_func_args(script_match)
+		extract_js_url_params(script_match)
+	end
+end
 
-		foreach(variable -> append!(EXTRACTED_JS_VARIABLES, variable.captures), variables)
-		foreach(object -> append!(EXTRACTED_JS_OBJECTS, object.captures), objects)
-		foreach(param -> append!(EXTRACTED_QUERY_KEYS, param.captures), params)
-		for args in funcArgs
-			for arg in keepat!(args.captures, [1, 3, 5, 7, 9, 11, 13, 15, 17])
-				isnothing(arg) || push!(EXTRACTED_JS_FUNC_ARGS, arg)
-			end
+# extract defined js variables name
+function extract_js_variables(script::String)
+	variables = eachmatch(r"(?:let|var|const)\s(\$?\w+)\s?=", script)
+	foreach(variable -> append!(EXTRACTED_JS_VARIABLES, variable.captures), variables)
+end
+
+# extract js objects keys
+function extract_js_objects_keys(script::String)
+	objects = eachmatch(r"(?:let|var|const)?\s?(?<=[\"\'])([\w\@\#\\$-\.]+)(?=[\"\']\s?:)", script)
+	foreach(object -> append!(EXTRACTED_JS_OBJECTS, object.captures), objects)
+end
+
+# extract js url parameters
+function extract_js_url_params(script::String)
+	params = eachmatch(r"[\?,\&,\;]([\w\-]+)[\=,\&,\;]?", script)
+	foreach(param -> append!(EXTRACTED_QUERY_KEYS, param.captures), params)
+end
+
+# extract js Functions arguments name
+function extract_js_func_args(script::String)
+	funcArgs = eachmatch(
+		Regex(
+			".*\\(\\s*[\"']?([\\w\\-]+)[\"']?\\s*(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?(,\\s*[\"']?([\\w\\-]+)[\"']?\\s*)?\\)",
+		),
+		script,
+	)
+
+	for args in funcArgs
+		for arg in keepat!(args.captures, [1, 3, 5, 7, 9, 11, 13, 15, 17])
+			isnothing(arg) || push!(EXTRACTED_JS_FUNC_ARGS, arg)
 		end
 	end
 end
 
+
 # Find A Tags
 # Extract Parameters of A Tags
-function ExtractATags(source::String)
+function extract_a_tags(source::String)
 	for a in eachmatch(r"<a(.*?)>[\s\S]*?<\/a.*>", source)
 		for param in eachmatch(r"[\?\&\;]([\w\-\~\+]+)", a.match)
 			append!(EXTRACTED_QUERY_KEYS, param.captures)
@@ -81,7 +102,7 @@ end
 
 # Find Input/Textarea Tags
 # Extract values of id, name Attributes
-function ExtractInputTags(source::String)
+function extract_input_tags(source::String)
 	for input in eachmatch(r"<(?:input|textarea).*?>", source)
 		for param in eachmatch(r"(?:name|id)\s?=\s?[\'\"](.+?)[\'\"]", input.match)
 			append!(EXTRACTED_INPUT_TEXTAREA_ID_NAME, param.captures)
@@ -89,14 +110,16 @@ function ExtractInputTags(source::String)
 	end
 end
 
-function ExtractFileNames(source::AbstractString, extensions::Vector{String})
+# Extract Files Name With Given Extensions
+function extract_file_name(source::AbstractString, extensions::Vector{String})
 	ext = join(extensions, '|')
 	regex = Regex("\\/?([\\w\\.\\-]+\\.(?:$ext))")
 	files = eachmatch(regex, source)
 	foreach(file -> append!(EXTRACTED_FILE_NAMES, file.captures), files)
 end
 
-function ExtractUrls(source::AbstractString)
+# Extract URLs
+function extract_url(source::AbstractString)
 	regex = r"""[\w\/\:\\]+?(/+[^\s\(\)\"\'\`\<\>\*\\]+)"""
 	urls = eachmatch(regex, source)
 	for url in urls
@@ -104,7 +127,8 @@ function ExtractUrls(source::AbstractString)
 	end
 end
 
-function ExtractPHPVariables(source::AbstractString)
+# Extract PHP variables & Parameters
+function extract_php_params(source::AbstractString)
 	variables = eachmatch(r"\$(\w+)\s?=", source)
 	GET_POST = eachmatch(r"\$_(?:GET|POST)\[[\",\'](.*)[\",\']\]", source)
 
@@ -112,7 +136,8 @@ function ExtractPHPVariables(source::AbstractString)
 	foreach(g_p -> append!(EXTRACTED_PHP_GET_POST, g_p.captures), GET_POST)
 end
 
-function ExtractXMLElemnts(source::String)
+# Extract XML Elements Name
+function extract_xml_elemnts(source::String)
 	elements = eachmatch(r"(?<=\<)(\w+)", source)
 	foreach(element -> append!(EXTRACTED_XML_ELEMENTS, element.captures), elements)
 end
@@ -132,15 +157,20 @@ end
 
 # Send Http Request 
 function SendHttpRequest(url::String, method::String = "GET", headers::Vector{String} = [])
-	method = uppercase(method)
-	if method ∉ ("GET", "POST", "PUT", "HEAD", "DELETE", "CONNECT", "OPTIONS", "TRACE", "PATCH")
-		@warn "Http methods: $colorGreen GET POST PUT HEAD DELETE CONNECT OPTIONS TRACE PATCH$colorReset\nyour method: $colorLightRed$(method)$colorReset 🤔"
+	user_method = uppercase(method)
+	valid_methods = (
+		"GET", "POST", "PUT",
+		"HEAD", "DELETE", "CONNECT",
+		"OPTIONS", "TRACE", "PATCH",
+	)
+	if method ∉ valid_methods
+		@warn "Http methods: $colorGreen $(join(valid_methods, " "))$colorReset\nyour method: $colorLightRed$(method)$colorReset 🤔"
 	end
 
 	try
 		Downloads.request(
 			url,
-			method = method,
+			method = user_method,
 			headers = ParseHttpHeaders(headers),
 			output = "src/body",
 		)

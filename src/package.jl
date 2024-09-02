@@ -2,7 +2,15 @@ using Pkg: Pkg
 
 function Check_Dependencies()
 	installed_packages = Pkg.project().dependencies
-	required_packages  = ("JSON", "ArgParse", "OrderedCollections", "Cascadia", "Gumbo", "HTTP")
+	required_packages  = (
+	"JSON",
+	"ArgParse",
+	"OrderedCollections",
+	"Cascadia",
+	"Gumbo",
+	"HTTP"
+)
+
 	prepare_to_install = String[]
 
 	for package in required_packages

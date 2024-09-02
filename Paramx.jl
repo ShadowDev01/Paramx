@@ -25,51 +25,51 @@ end
 
 # Extract Data From HTML Source
 function HtmlSource(source::String)
-	args["w"] && ExtractUrls(source)
-	args["a"] && ExtractATags(source)
-	args["i"] && ExtractInputTags(source)
-	args["s"] && ExtractScriptTags(source)
-	args["f"] && ExtractFileNames(source, args["e"])
+	args["w"] && extract_url(source)
+	args["a"] && extract_a_tags(source)
+	args["i"] && extract_input_tags(source)
+	args["s"] && extract_script_tags(source)
+	args["f"] && extract_file_name(source, args["e"])
 end
 
 # Extract Data From Given JS Source
 function JSSource(source::String)
 	source = "<body>\n<script>\n$source\n</script>\n</body>"
-	args["p"] && ExtractScriptTags(source)
-	args["w"] && ExtractUrls(source)
-	args["f"] && ExtractFileNames(source, args["e"])
+	args["p"] && extract_script_tags(source)
+	args["w"] && extract_url(source)
+	args["f"] && extract_file_name(source, args["e"])
 end
 
 # Extract Data From Given PHP Source
 function PHPSource(source::String)
-	args["p"] && ExtractPHPVariables(source)
-	args["w"] && ExtractUrls(source)
-	args["f"] && ExtractFileNames(source, args["e"])
+	args["p"] && extract_php_params(source)
+	args["w"] && extract_url(source)
+	args["f"] && extract_file_name(source, args["e"])
 end
 
 # Extract Data From Given XML Source
 function XMLSource(source::String)
-	args["p"] && ExtractXMLElemnts(source)
-	args["w"] && ExtractUrls(source)
-	args["f"] && ExtractFileNames(source, args["e"])
+	args["p"] && extract_xml_elemnts(source)
+	args["w"] && extract_url(source)
+	args["f"] && extract_file_name(source, args["e"])
 end
 
 function HtmlRequestText(source::String)
 	if args["p"]
-		ExtractScriptTags(source)
-		ExtractInputTags(source)
+		extract_script_tags(source)
+		extract_input_tags(source)
 	end
-	args["w"] && ExtractUrls(source)
-	args["f"] && ExtractFileNames(source, args["e"])
+	args["w"] && extract_url(source)
+	args["f"] && extract_file_name(source, args["e"])
 end
 
 function HtmlResponseText(source::String)
 	if args["p"]
-		ExtractScriptTags(source)
-		ExtractInputTags(source)
+		extract_script_tags(source)
+		extract_input_tags(source)
 	end
-	args["w"] && ExtractUrls(source)
-	args["f"] && ExtractFileNames(source, args["e"])
+	args["w"] && extract_url(source)
+	args["f"] && extract_file_name(source, args["e"])
 end
 
 
@@ -122,6 +122,18 @@ function main()
 	if !isnothing(args["response"])
 		HtmlResponseFile = ReadFile(args["response"])
 		HtmlResponseText(HtmlResponseFile)
+	end
+
+	# Check work switch be enabled
+	check_work_switches::Bool = any([
+		args["A"], args["a"], args["i"],
+		args["s"], args["p"], args["f"],
+		args["w"],
+	])
+
+	if !check_work_switches
+		@warn "please select work switch: -a / -i / ..."
+		exit(0)
 	end
 
 	Data = union(
