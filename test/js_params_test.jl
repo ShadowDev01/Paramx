@@ -15,7 +15,7 @@ end
 println("\n")
 
 @testset "js_params" verbose = true begin
-    ExtractScriptTags(js1)
+    extract_script_tags(js1)
 
     @testset "js_variables" verbose = true begin
         @test EXTRACTED_JS_VARIABLES == ["myVariable", "anotherVariable", "apiBaseUrl", "apiKey", "options", "myDictionary", "result", "fullname", "age", "multiply"]
