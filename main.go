@@ -7,6 +7,5 @@ import (
 
 func main() {
 	options := cli.ParseOptions()
-
-	fmt.Println(*options)
+	fmt.Println("\n\n\n\n", *options)
 }

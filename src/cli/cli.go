@@ -87,9 +87,14 @@ func ParseOptions() *Options {
 		opt.ExtractFileNames = true
 	}
 
+	// Check Input
+	if opt.URL == "" && opt.URLFile == "" && opt.HTMLFile == "" && opt.JSFile == "" && opt.PHPFile == "" && opt.XMLFile == "" {
+		log.Fatal("Provide Input Please!")
+	}
+
+	// Validate Headers
 	for _, header := range opt.Headers {
 		parts := strings.SplitN(header, ":", 2)
-
 		if len(parts) != 2 || strings.TrimSpace(parts[0]) == "" || strings.TrimSpace(parts[1]) == "" {
 			log.Fatalf("The Header format is Invalid: %s", header)
 		}
