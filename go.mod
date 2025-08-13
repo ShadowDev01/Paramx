@@ -1,3 +1,3 @@
-module Paramx
+module github.com/ShadowDev01/Paramx
 
-go 1.24
+go 1.24.2
