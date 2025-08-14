@@ -1,24 +1,28 @@
-package cli
+package config
 
 import (
+	"errors"
+	"fmt"
 	"github.com/projectdiscovery/goflags"
-	"log"
+	"net/url"
 	"strings"
+	"time"
 )
 
 type Options struct {
-	// Input Options
+	// Input
 	URL      string
 	URLFile  string
 	HTMLFile string
 	JSFile   string
 	PHPFile  string
 	XMLFile  string
+	Stdin    bool
 
-	// Output Options
+	// Output
 	OutputFile string
 
-	// Extract Options
+	// Extract
 	ExtractHrefParams    bool
 	ExtractInputTags     bool
 	ExtractScriptParams  bool
@@ -28,14 +32,14 @@ type Options struct {
 	AllExtractionModes   bool
 	ExtensionsToSearch   goflags.StringSlice
 
-	// HTTP Request Options
+	// HTTP
 	Headers goflags.StringSlice
 	Method  string
 	Proxy   string
-	Timeout int
+	Timeout time.Duration
 }
 
-func ParseOptions() *Options {
+func ParseOptions() (*Options, error) {
 	opt := &Options{}
 
 	flagSet := goflags.NewFlagSet()
@@ -49,6 +53,7 @@ func ParseOptions() *Options {
 		flagSet.StringVar(&opt.JSFile, "js", "", "Use saved JS file"),
 		flagSet.StringVar(&opt.PHPFile, "php", "", "Use saved PHP file"),
 		flagSet.StringVar(&opt.XMLFile, "xml", "", "Use saved XML file"),
+		flagSet.BoolVar(&opt.Stdin, "stdin", false, "Use stdin"),
 	)
 
 	flagSet.CreateGroup("Output", "Output Options",
@@ -69,15 +74,28 @@ func ParseOptions() *Options {
 	flagSet.CreateGroup("HTTP", "HTTP Options",
 		flagSet.StringVar(&opt.Method, "method", "GET", "HTTP method"),
 		flagSet.StringVar(&opt.Proxy, "proxy", "", "Proxy"),
-		flagSet.IntVar(&opt.Timeout, "timeout", 10, "Timeout seconds"),
+		flagSet.DurationVar(&opt.Timeout, "timeout", time.Second*10, "Timeout seconds"),
 		flagSet.StringSliceVar(&opt.Headers, "H", nil, "Custom HTTP header (repeatable)", goflags.NormalizedStringSliceOptions),
 	)
 
 	if err := flagSet.Parse(); err != nil {
-
-		log.Fatalf("Error parsing flags: %s\n", err)
+		return nil, fmt.Errorf("parse flags: %w", err)
 	}
 
+	opt.setDefaults()
+
+	if err := opt.normalize(); err != nil {
+		return nil, err
+	}
+
+	if err := opt.validate(); err != nil {
+		return nil, err
+	}
+
+	return opt, nil
+}
+
+func (opt *Options) setDefaults() {
 	if opt.AllExtractionModes {
 		opt.ExtractHrefParams = true
 		opt.ExtractInputTags = true
@@ -86,19 +104,37 @@ func ParseOptions() *Options {
 		opt.ExtractURLs = true
 		opt.ExtractFileNames = true
 	}
+}
 
-	// Check Input
-	if opt.URL == "" && opt.URLFile == "" && opt.HTMLFile == "" && opt.JSFile == "" && opt.PHPFile == "" && opt.XMLFile == "" {
-		log.Fatal("Provide Input Please!")
-	}
-
-	// Validate Headers
+func (opt *Options) normalize() error {
 	for _, header := range opt.Headers {
 		parts := strings.SplitN(header, ":", 2)
 		if len(parts) != 2 || strings.TrimSpace(parts[0]) == "" || strings.TrimSpace(parts[1]) == "" {
-			log.Fatalf("The Header format is Invalid: %s", header)
+			return fmt.Errorf("invalid header: %q", header)
+		}
+	}
+	return nil
+}
+
+func (opt *Options) validate() error {
+	// Check Input Provided
+	if opt.URL == "" && opt.URLFile == "" && opt.HTMLFile == "" && opt.JSFile == "" && opt.PHPFile == "" && opt.XMLFile == "" {
+		return errors.New("no input provided (use -u, -ul, -html, -js, -php, -xml, or --stdin)")
+	}
+
+	// Check Proxy
+	if opt.Proxy != "" {
+		if u, err := url.Parse(opt.Proxy); err != nil || u.Scheme == "" || u.Host == "" {
+			return fmt.Errorf("invalid proxy: %s", opt.Proxy)
 		}
 	}
 
-	return opt
+	// Check HTTP Method
+	switch opt.Method {
+	case "GET", "POST", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE":
+	default:
+		return fmt.Errorf("invalid HTTP method: %s", opt.Method)
+	}
+
+	return nil
 }
