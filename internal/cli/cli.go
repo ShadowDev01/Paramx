@@ -1,8 +1,9 @@
-package config
+package cli
 
 import (
 	"errors"
 	"fmt"
+	"github.com/ShadowDev01/Paramx/internal/utils"
 	"github.com/projectdiscovery/goflags"
 	"net/url"
 	"strings"
@@ -107,18 +108,37 @@ func (opt *Options) setDefaults() {
 }
 
 func (opt *Options) normalize() error {
-	for _, header := range opt.Headers {
+	opt.URL = utils.TrimIfNotEmpty(opt.URL)
+	opt.URLFile = utils.TrimIfNotEmpty(opt.URLFile)
+	opt.HTMLFile = utils.TrimIfNotEmpty(opt.HTMLFile)
+	opt.JSFile = utils.TrimIfNotEmpty(opt.JSFile)
+	opt.PHPFile = utils.TrimIfNotEmpty(opt.PHPFile)
+	opt.XMLFile = utils.TrimIfNotEmpty(opt.XMLFile)
+
+	for i, header := range opt.Headers {
 		parts := strings.SplitN(header, ":", 2)
-		if len(parts) != 2 || strings.TrimSpace(parts[0]) == "" || strings.TrimSpace(parts[1]) == "" {
+		if len(parts) != 2 {
 			return fmt.Errorf("invalid header: %q", header)
 		}
+		key := strings.TrimSpace(parts[0])
+		value := strings.TrimSpace(parts[1])
+		if key == "" || value == "" {
+			return fmt.Errorf("invalid header: %q", header)
+		}
+		opt.Headers[i] = fmt.Sprintf("%s: %s", key, value)
 	}
+
 	return nil
+}
+
+func (opt *Options) hasInput() bool {
+	return opt.URL != "" || opt.URLFile != "" || opt.HTMLFile != "" ||
+		opt.JSFile != "" || opt.PHPFile != "" || opt.XMLFile != "" || opt.Stdin
 }
 
 func (opt *Options) validate() error {
 	// Check Input Provided
-	if opt.URL == "" && opt.URLFile == "" && opt.HTMLFile == "" && opt.JSFile == "" && opt.PHPFile == "" && opt.XMLFile == "" {
+	if !opt.hasInput() {
 		return errors.New("no input provided (use -u, -ul, -html, -js, -php, -xml, or --stdin)")
 	}
 
@@ -133,7 +153,7 @@ func (opt *Options) validate() error {
 	switch opt.Method {
 	case "GET", "POST", "HEAD", "OPTIONS", "PUT", "PATCH", "DELETE":
 	default:
-		return fmt.Errorf("invalid HTTP method: %s", opt.Method)
+		return fmt.Errorf("invalid HTTP method %q. Allowed: GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE", opt.Method)
 	}
 
 	return nil

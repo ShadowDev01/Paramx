@@ -1,5 +1,14 @@
 package utils
 
+import "strings"
+
+func TrimIfNotEmpty(s string) string {
+	if s != "" {
+		return strings.TrimSpace(s)
+	}
+	return s
+}
+
 func Unique(slice []string) []string {
 	seen := make(map[string]struct{}, len(slice))
 	out := make([]string, 0, len(slice))
