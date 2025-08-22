@@ -1,9 +1,4 @@
 # Paramx
-
-<p align="center">
-  <img src="src/paramx.png" alt="Paramx Logo" width="600" />
-</p>
-
 ---
 
 > **Paramx** is a versatile command-line utility written in Go, designed to extract parameters, identifiers, and resources from various web and source file formats.
