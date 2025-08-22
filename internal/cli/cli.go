@@ -6,8 +6,11 @@ import (
 	"github.com/ShadowDev01/Paramx/internal/utils"
 	"github.com/projectdiscovery/goflags"
 	"net/url"
+	"os"
+	"regexp"
 	"strings"
 	"time"
+	"unicode"
 )
 
 type Options struct {
@@ -16,28 +19,28 @@ type Options struct {
 	URLFile  string
 	HTMLFile string
 	JSFile   string
-	PHPFile  string
 	XMLFile  string
-	Stdin    bool
 
 	// Output
 	OutputFile string
 
 	// Extract
-	ExtractHrefParams    bool
-	ExtractInputTags     bool
-	ExtractScriptParams  bool
-	ExtractFileNames     bool
-	ExtractURLs          bool
-	ExtractGenericParams bool
-	AllExtractionModes   bool
-	ExtensionsToSearch   goflags.StringSlice
+	ExtractHrefParams   bool
+	ExtractInputTags    bool
+	ExtractScriptParams bool
+	ExtractFileNames    bool
+	ExtractURLs         bool
+	AllExtractionModes  bool
+	ExtensionsToSearch  goflags.StringSlice
 
 	// HTTP
 	Headers goflags.StringSlice
 	Method  string
 	Proxy   string
 	Timeout time.Duration
+
+	//reg
+	FilenameRegex *regexp.Regexp
 }
 
 func ParseOptions() (*Options, error) {
@@ -52,9 +55,7 @@ func ParseOptions() (*Options, error) {
 		flagSet.StringVar(&opt.URLFile, "ul", "", "File of URLs (one per line)"),
 		flagSet.StringVar(&opt.HTMLFile, "html", "", "Use saved HTML file"),
 		flagSet.StringVar(&opt.JSFile, "js", "", "Use saved JS file"),
-		flagSet.StringVar(&opt.PHPFile, "php", "", "Use saved PHP file"),
 		flagSet.StringVar(&opt.XMLFile, "xml", "", "Use saved XML file"),
-		flagSet.BoolVar(&opt.Stdin, "stdin", false, "Use stdin"),
 	)
 
 	flagSet.CreateGroup("Output", "Output Options",
@@ -65,10 +66,9 @@ func ParseOptions() (*Options, error) {
 		flagSet.BoolVar(&opt.ExtractHrefParams, "a", false, "Extract parameters from <a> tags (href query strings)"),
 		flagSet.BoolVar(&opt.ExtractInputTags, "i", false, "Extract name & id from <input> and <textarea> tags"),
 		flagSet.BoolVar(&opt.ExtractScriptParams, "s", false, "Extract JS variables, object keys"),
-		flagSet.BoolVar(&opt.ExtractGenericParams, "p", false, "Extract parameters from HTTP messages, JS, PHP, or XML content"),
 		flagSet.BoolVar(&opt.ExtractURLs, "w", false, "Extract URLs and file paths"),
 		flagSet.BoolVar(&opt.ExtractFileNames, "f", false, "Extract file names with specified extensions"),
-		flagSet.StringSliceVar(&opt.ExtensionsToSearch, "e", []string{"js"}, "Define file extensions to search (default js)", goflags.NormalizedStringSliceOptions),
+		flagSet.StringSliceVar(&opt.ExtensionsToSearch, "e", nil, "Define file extensions to search", goflags.NormalizedStringSliceOptions),
 		flagSet.BoolVar(&opt.AllExtractionModes, "A", false, "Enable All extraction modes (-a -i -s -p -f -w)"),
 	)
 
@@ -101,7 +101,6 @@ func (opt *Options) setDefaults() {
 		opt.ExtractHrefParams = true
 		opt.ExtractInputTags = true
 		opt.ExtractScriptParams = true
-		opt.ExtractGenericParams = true
 		opt.ExtractURLs = true
 		opt.ExtractFileNames = true
 	}
@@ -112,7 +111,6 @@ func (opt *Options) normalize() error {
 	opt.URLFile = utils.TrimIfNotEmpty(opt.URLFile)
 	opt.HTMLFile = utils.TrimIfNotEmpty(opt.HTMLFile)
 	opt.JSFile = utils.TrimIfNotEmpty(opt.JSFile)
-	opt.PHPFile = utils.TrimIfNotEmpty(opt.PHPFile)
 	opt.XMLFile = utils.TrimIfNotEmpty(opt.XMLFile)
 
 	for i, header := range opt.Headers {
@@ -125,21 +123,21 @@ func (opt *Options) normalize() error {
 		if key == "" || value == "" {
 			return fmt.Errorf("invalid header: %q", header)
 		}
-		opt.Headers[i] = fmt.Sprintf("%s: %s", key, value)
+		opt.Headers[i] = fmt.Sprintf("%s:%s", key, value)
 	}
 
 	return nil
 }
 
-func (opt *Options) hasInput() bool {
-	return opt.URL != "" || opt.URLFile != "" || opt.HTMLFile != "" ||
-		opt.JSFile != "" || opt.PHPFile != "" || opt.XMLFile != "" || opt.Stdin
-}
-
 func (opt *Options) validate() error {
 	// Check Input Provided
 	if !opt.hasInput() {
-		return errors.New("no input provided (use -u, -ul, -html, -js, -php, -xml, or --stdin)")
+		return errors.New("no input provided (use -u, -ul, -html, -js, -xml")
+	}
+
+	//Check File Exists
+	if err := opt.isExistsInputFile(); err != nil {
+		return err
 	}
 
 	// Check Proxy
@@ -156,5 +154,54 @@ func (opt *Options) validate() error {
 		return fmt.Errorf("invalid HTTP method %q. Allowed: GET, POST, HEAD, OPTIONS, PUT, PATCH, DELETE", opt.Method)
 	}
 
+	if opt.ExtractFileNames && len(opt.ExtensionsToSearch) == 0 {
+		return errors.New("provide at least one file extension to search")
+	}
+
+	if err := opt.checkExtensions(); err != nil {
+		return err
+	}
+
+	opt.setReg()
+
 	return nil
+}
+
+func (opt *Options) hasInput() bool {
+	return opt.URL != "" || opt.URLFile != "" || opt.HTMLFile != "" ||
+		opt.JSFile != "" || opt.XMLFile != ""
+}
+
+func (opt *Options) isExistsInputFile() error {
+	for _, file := range []string{opt.URLFile, opt.HTMLFile, opt.JSFile, opt.XMLFile} {
+		if file != "" {
+			if _, err := os.Stat(file); os.IsNotExist(err) {
+				return fmt.Errorf("no such file: %q", file)
+			}
+		}
+
+	}
+	return nil
+}
+
+func (opt *Options) checkExtensions() error {
+	if opt.ExtensionsToSearch != nil {
+		for _, ext := range opt.ExtensionsToSearch {
+			for _, ch := range ext {
+				if !unicode.IsLetter(ch) {
+					if !unicode.IsDigit(ch) {
+						return fmt.Errorf("invalid extension: %q", ext)
+					}
+				}
+			}
+		}
+	}
+	return nil
+}
+
+func (opt *Options) setReg() {
+	if opt.ExtractFileNames && opt.ExtensionsToSearch != nil {
+		pattern := fmt.Sprintf(`\/?([\w\.\-]+\.(?:%s))`, strings.Join(opt.ExtensionsToSearch, "|"))
+		opt.FilenameRegex = regexp.MustCompile(pattern)
+	}
 }
